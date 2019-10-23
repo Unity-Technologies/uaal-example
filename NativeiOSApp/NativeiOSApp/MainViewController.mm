@@ -213,7 +213,7 @@ NSDictionary* appLaunchOpts;
     if(![self unityIsInitialized]) {
         showAlert(@"Unity is not initialized", @"Initialize Unity first");
     } else {
-        [UnityFrameworkLoad() unloadApplicaion: true];
+        [UnityFrameworkLoad() unloadApplication: true];
     }
 }
 
