@@ -1,4 +1,4 @@
-## Integrating Unity as a library into standard Android app##
+## Integrating Unity as a library into standard Android app
 This document explains how to include Unity as a Library into standard Android application through Activity. You can read more about Unity as a Library.
 
 **Requirements:**
@@ -50,7 +50,7 @@ This document explains how to include Unity as a Library into standard Android a
 - If everything succeeds, you should see unityLibrary module added in Android view
   <img src="images/android/unityLibraryModule.png">
 
-## Project is ready ##
+## Project is ready
 Everything is ready to build, run and debug:
 <br><img src="images/android/buildOnDevice.png" width='500px'>
 <br>If everything succeeded, at this point you should be able to run NativeAndroidApp:
@@ -60,7 +60,7 @@ Main Activity | Unity Activity
 <img src="images/android/appNativeSS.png" > | <img src="images/android/appUnitySS.png" height='800px'>
 Main Activity | Unity is loaded and is running in a separate Activity. Light grey buttons in the middle are added from the MainUnityActivity implemented in NativeAndroidApp
 
-## Notes ##
+## Notes
 - Unity is running in another process android:process=":Unity" (AndroidManifest.xml at app module)
 - After installation there will be two icons added on the device. To leave only the icon of the main activity, remove <intent-filter>...</intent-filter> from the AndroidManifest.xml in unityLibrary
 - (Optional) We found some Android 7.* devices set frontOfTask to wrong state for activities as a result when finishing/quitting Unity activity whole task goes to background instead of bringing back Main activity. Next workaround keeps expected behavior: add to MainUnityActivity.java from NativeAndroidApp
