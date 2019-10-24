@@ -1,3 +1,4 @@
+## Integrating Unity as a library into standard Android app##
 This document explains how to include Unity as a Library into standard Android application through Activity. You can read more about Unity as a Library.
 
 **Requirements:**
