@@ -16,5 +16,5 @@ The build process overall is still the same, Unity creates the iOS Xcode and And
  A library part (iOS framework and Android Archive (AAR) file) that includes all source & plugins 
  A thin launcher part that includes app representation data and runs library
 
-Step by step explanations on how to include the iOS / Android library part into your native application when needed.
+Step by step explanations on how to include the iOS / [Android](docs/android.md) library part into your native application when needed.
 
