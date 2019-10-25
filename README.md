@@ -10,6 +10,7 @@ For example:
 - Unity as a Library supports rendering only full screen, rendering on a part of the screen isn’t supported.
 - Loading more than one instance of the Unity runtime isn’t supported.
 - You may need to adapt 3rd party Plug-ins (native or managed) to work properly  
+- Overhead of having Unity in unloaded state is: 90Mb for Android and 110Mb for iOS
 
 **How it works**
 The build process overall is still the same, Unity creates the iOS Xcode and Android Gradle projects and generated iOS Xcode and Android Gradle projects have the following structure:
