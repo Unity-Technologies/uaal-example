@@ -8,7 +8,7 @@ This document explains how to include Unity as a Library into standard iOS appli
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
   <br><img src="images/ios/folderStructure.png">
-  - Unityproject - this is a simple demo project made with Unity which will be integrated to the standard iOS application
+  - UnityProject - this is a simple demo project made with Unity which will be integrated to the standard iOS application. Assets / Plugins / iOS files used to communicate from Unity player to Native app
   - NativeiOSApp - this is simple Xcode single view application where we want to integrate our Unity project. It has some UI and is prepared to load player with UnityFrameworkLoad() 
 
 **2. Generate Xcode project for iOS**
