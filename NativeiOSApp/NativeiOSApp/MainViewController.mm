@@ -39,10 +39,13 @@ void showAlert(NSString* title, NSString* msg) {
 @property (nonatomic, strong) UIButton *btnSendMsg;
 @property (nonatomic, strong) UINavigationController *navVC;
 @property (nonatomic, strong) UIButton *unloadBtn;
+@property (nonatomic, strong) UIButton *quitBtn;
 @property (nonatomic, strong) MyViewController *viewController;
 
 
 @property UnityFramework* ufw;
+@property bool didQuit;
+
 - (void)initUnity;
 - (void)ShowMainView;
 
@@ -67,6 +70,7 @@ AppDelegate* hostDelegate = NULL;
 @property (nonatomic, strong) UIButton *unityInitBtn;
 @property (nonatomic, strong) UIButton *unpauseBtn;
 @property (nonatomic, strong) UIButton *unloadBtn;
+@property (nonatomic, strong) UIButton *quitBtn;
 @end
 
 @implementation MyViewController
@@ -96,11 +100,20 @@ AppDelegate* hostDelegate = NULL;
     // UNLOAD UNITY
     self.unloadBtn = [UIButton buttonWithType: UIButtonTypeSystem];
     [self.unloadBtn setTitle: @"Unload" forState: UIControlStateNormal];
-    self.unloadBtn.frame = CGRectMake(300, 0, 100, 44);
+    self.unloadBtn.frame = CGRectMake(200, 0, 100, 44);
     self.unloadBtn.center = CGPointMake(250, 120);
     self.unloadBtn.backgroundColor = [UIColor redColor];
     [self.unloadBtn addTarget: hostDelegate action: @selector(unloadButtonTouched:) forControlEvents: UIControlEventPrimaryActionTriggered];
     [self.view addSubview: self.unloadBtn];
+    
+    // QUIT UNITY
+    self.quitBtn = [UIButton buttonWithType: UIButtonTypeSystem];
+    [self.quitBtn setTitle: @"Quit" forState: UIControlStateNormal];
+    self.quitBtn.frame = CGRectMake(300, 0, 100, 44);
+    self.quitBtn.center = CGPointMake(250, 170);
+    self.quitBtn.backgroundColor = [UIColor redColor];
+    [self.quitBtn addTarget: hostDelegate action: @selector(quitButtonTouched:) forControlEvents: UIControlEventPrimaryActionTriggered];
+    [self.view addSubview: self.quitBtn];
 }
 
 - (void)didReceiveMemoryWarning
@@ -170,6 +183,10 @@ NSDictionary* appLaunchOpts;
         showAlert(@"Unity already initialized", @"Unload Unity first");
         return;
     }
+    if([self didQuit]) {
+        showAlert(@"Unity cannot be initialized after quit", @"Use unload instead");
+        return;
+    }
     
     [self setUfw: UnityFrameworkLoad()];
     // Set UnityFramework target for Unity-iPhone/Data folder to make Data part of a UnityFramework.framework and uncomment call to setDataBundleId
@@ -180,32 +197,46 @@ NSDictionary* appLaunchOpts;
     
     [[self ufw] runEmbeddedWithArgc: gArgc argv: gArgv appLaunchOpts: appLaunchOpts];
     
+    // set quit handler to change default behavior of exit app
+    [[self ufw] appController].quitHandler = ^(){ NSLog(@"AppController.quitHandler called"); };
+    
     auto view = [[[self ufw] appController] rootView];
     
-    self.showUnityOffButton = [UIButton buttonWithType: UIButtonTypeSystem];
-    [self.showUnityOffButton setTitle: @"Show Main" forState: UIControlStateNormal];
-    self.showUnityOffButton.frame = CGRectMake(0, 0, 100, 44);
-    self.showUnityOffButton.center = CGPointMake(50, 300);
-    self.showUnityOffButton.backgroundColor = [UIColor greenColor];
-    [view addSubview: self.showUnityOffButton];
-    [self.showUnityOffButton addTarget: self action: @selector(showHostMainWindow) forControlEvents: UIControlEventPrimaryActionTriggered];
-    
-    self.btnSendMsg = [UIButton buttonWithType: UIButtonTypeSystem];
-    [self.btnSendMsg setTitle: @"Send Msg" forState: UIControlStateNormal];
-    self.btnSendMsg.frame = CGRectMake(0, 0, 100, 44);
-    self.btnSendMsg.center = CGPointMake(150, 300);
-    self.btnSendMsg.backgroundColor = [UIColor yellowColor];
-    [view addSubview: self.btnSendMsg];
-    [self.btnSendMsg addTarget: self action: @selector(sendMsgToUnity) forControlEvents: UIControlEventPrimaryActionTriggered];
-    
-    // Unload
-    self.unloadBtn = [UIButton buttonWithType: UIButtonTypeSystem];
-    [self.unloadBtn setTitle: @"Unload" forState: UIControlStateNormal];
-    self.unloadBtn.frame = CGRectMake(250, 0, 100, 44);
-    self.unloadBtn.center = CGPointMake(250, 300);
-    self.unloadBtn.backgroundColor = [UIColor redColor];
-    [self.unloadBtn addTarget: self action: @selector(unloadButtonTouched:) forControlEvents: UIControlEventPrimaryActionTriggered];
-    [view addSubview: self.unloadBtn];
+    if(self.showUnityOffButton == nil) {
+        self.showUnityOffButton = [UIButton buttonWithType: UIButtonTypeSystem];
+        [self.showUnityOffButton setTitle: @"Show Main" forState: UIControlStateNormal];
+        self.showUnityOffButton.frame = CGRectMake(0, 0, 100, 44);
+        self.showUnityOffButton.center = CGPointMake(50, 300);
+        self.showUnityOffButton.backgroundColor = [UIColor greenColor];
+        [view addSubview: self.showUnityOffButton];
+        [self.showUnityOffButton addTarget: self action: @selector(showHostMainWindow) forControlEvents: UIControlEventPrimaryActionTriggered];
+        
+        self.btnSendMsg = [UIButton buttonWithType: UIButtonTypeSystem];
+        [self.btnSendMsg setTitle: @"Send Msg" forState: UIControlStateNormal];
+        self.btnSendMsg.frame = CGRectMake(0, 0, 100, 44);
+        self.btnSendMsg.center = CGPointMake(150, 300);
+        self.btnSendMsg.backgroundColor = [UIColor yellowColor];
+        [view addSubview: self.btnSendMsg];
+        [self.btnSendMsg addTarget: self action: @selector(sendMsgToUnity) forControlEvents: UIControlEventPrimaryActionTriggered];
+        
+        // Unload
+        self.unloadBtn = [UIButton buttonWithType: UIButtonTypeSystem];
+        [self.unloadBtn setTitle: @"Unload" forState: UIControlStateNormal];
+        self.unloadBtn.frame = CGRectMake(250, 0, 100, 44);
+        self.unloadBtn.center = CGPointMake(250, 300);
+        self.unloadBtn.backgroundColor = [UIColor redColor];
+        [self.unloadBtn addTarget: self action: @selector(unloadButtonTouched:) forControlEvents: UIControlEventPrimaryActionTriggered];
+        [view addSubview: self.unloadBtn];
+        
+        // Quit
+        self.quitBtn = [UIButton buttonWithType: UIButtonTypeSystem];
+        [self.quitBtn setTitle: @"Quit" forState: UIControlStateNormal];
+        self.quitBtn.frame = CGRectMake(250, 0, 100, 44);
+        self.quitBtn.center = CGPointMake(250, 350);
+        self.quitBtn.backgroundColor = [UIColor redColor];
+        [self.quitBtn addTarget: self action: @selector(quitButtonTouched:) forControlEvents: UIControlEventPrimaryActionTriggered];
+        [view addSubview: self.quitBtn];
+    }
 }
 
 - (void)unloadButtonTouched:(UIButton *)sender
@@ -213,16 +244,35 @@ NSDictionary* appLaunchOpts;
     if(![self unityIsInitialized]) {
         showAlert(@"Unity is not initialized", @"Initialize Unity first");
     } else {
-        [UnityFrameworkLoad() unloadApplication: true];
+        [UnityFrameworkLoad() unloadApplication];
+    }
+}
+
+- (void)quitButtonTouched:(UIButton *)sender
+{
+    if(![self unityIsInitialized]) {
+        showAlert(@"Unity is not initialized", @"Initialize Unity first");
+    } else {
+        [UnityFrameworkLoad() quitApplication:0];
     }
 }
 
 - (void)unityDidUnload:(NSNotification*)notification
 {
-    NSLog(@"unityDidUnloaded called");
+    NSLog(@"unityDidUnload called");
     
     [[self ufw] unregisterFrameworkListener: self];
     [self setUfw: nil];
+    [self showHostMainWindow:@""];
+}
+
+- (void)unityDidQuit:(NSNotification*)notification
+{
+    NSLog(@"unityDidQuit called");
+    
+    [[self ufw] unregisterFrameworkListener: self];
+    [self setUfw: nil];
+    [self setDidQuit:true];
     [self showHostMainWindow:@""];
 }
 
