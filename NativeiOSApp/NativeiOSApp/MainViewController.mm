@@ -44,6 +44,8 @@ void showAlert(NSString* title, NSString* msg) {
 
 
 @property UnityFramework* ufw;
+@property bool didQuit;
+
 - (void)initUnity;
 - (void)ShowMainView;
 
@@ -181,6 +183,10 @@ NSDictionary* appLaunchOpts;
         showAlert(@"Unity already initialized", @"Unload Unity first");
         return;
     }
+    if([self didQuit]) {
+        showAlert(@"Unity cannot be initialized after quit", @"Use unload instead");
+        return;
+    }
     
     [self setUfw: UnityFrameworkLoad()];
     // Set UnityFramework target for Unity-iPhone/Data folder to make Data part of a UnityFramework.framework and uncomment call to setDataBundleId
@@ -266,6 +272,7 @@ NSDictionary* appLaunchOpts;
     
     [[self ufw] unregisterFrameworkListener: self];
     [self setUfw: nil];
+    [self setDidQuit:true];
     [self showHostMainWindow:@""];
 }
 
