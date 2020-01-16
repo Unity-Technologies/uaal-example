@@ -1,5 +1,5 @@
 ## Integrating Unity as a library into standard Android app
-This document explains how to include Unity as a Library into standard Android application through Activity. You can read more about Unity as a Library.
+This document explains how to include Unity as a Library into standard Android application through Activity. You can read more about [Unity as a Library](https://docs.unity3d.com/2019.3/Documentation/Manual/UnityasaLibrary.html).
 
 **Requirements:**
 - Android Studio 3.4.2+
