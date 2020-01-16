@@ -14,7 +14,7 @@ This document explains how to include Unity as a Library into standard iOS appli
 **2. Generate Xcode project for iOS**
 <br>Nothing new here just generate Xcode project as usual:
 - from Unity Editor open UnityProject 
-- set valid Bundle Identification and Signing Team ID ( to avoid Xcode signing issues on later steps )  (Menu / Edit / Player Settings / Player / iOS Setting tab / Identification Section)
+- set valid Bundle Identification and Signing Team ID ( to avoid Xcode signing issues on later steps )  (Menu / Edit / Project Settings / Player / iOS Setting tab / Other Settings / Identification Section)
 - select and switch to platform iOS (Menu / File / Builds Settings)
   - Build inside UnityProject to iosBuild folder
     <br><img src="images/ios/iosBuildProject.png">
