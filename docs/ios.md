@@ -31,10 +31,12 @@ This document explains how to include Unity as a Library into standard iOS appli
 **4. Add UnityFramework.framework**
 <br>With this step we add Unity player in the form of a framework to NativeiOSApp, it does not change the behavior of NativeiOSApp yet
 - select NativeiOSApp target from NativeiOSApp project
-- in General / Embedded Binaries press + 
-- select Unity-iPhone/Products/UnityFramework.framework
-- remove UnityFramework.framework from Linked Frameworks and Libraries ( select it and press - )
-  <br><img src="images/ios/addToEmbeddedBinaries.png">
+- in "General / Frameworks, Libraries, and Embedded  Content" press +
+- select Unity-iPhone/UnityFramework.framework
+  <br><img src="images/ios/addToEmbeddedContent.png">
+- in "Build Phases" tab, expand "Link Binary With Libraries"
+- remove UnityFramework.framework from the list (select it and press - )
+  <br><img src="images/ios/removeLink.png">
 
 **5. Expose NativeCallProxy.h**
 <br>Native application implements NativeCallsProtocol defined in following file:
