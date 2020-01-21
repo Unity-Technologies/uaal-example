@@ -48,7 +48,7 @@ This document explains how to include Unity as a Library into standard iOS appli
  <br>By default Data folder is part of Unity-iPhone target, we change that to make everything encapsulated in one single framework file.
  - change Target Membership for Data folder to UnityFramework
    <br><img src="images/ios/dataTargetMembership.png" height='300px'>
- - (optional) after previous change for Unity-iPhone project to continue to work Unity player need to point to a new place where Data is located by calling from Unity-iPhone/MainApp/main.mm:
+ - (optional) If you want to use Unity-iPhone sheme you need to point UnityFramework to a new place where Data is located by calling from Unity-iPhone/MainApp/main.mm:
    ```
    [ufw setDataBundleId: "com.unity3d.framework"];
    // On Demand Resources are not supported in this case. To make them work instead of the calls above 
@@ -58,7 +58,7 @@ This document explains how to include Unity as a Library into standard iOS appli
    <br><img src="images/ios/setDataBundleId.png">
   
 ## Workspace is ready
-Everything is ready to build, run and debug for both projects: Unity-iPhone and NativeiOSApp (select scheme NativeiOSApp or Unity-iPhone)
+Everything is ready to build, run and debug for both projects: Unity-iPhone and NativeiOSApp (select NativeiOSApp scheme to run Native App with integrated Unity or Unity-iPhone to run just Unity App part)
 <br><img src="images/ios/selectTargetToBuild.png">
 If all went successfully at this point you should be able to run NativeiOSApp:
 
