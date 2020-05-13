@@ -4,7 +4,13 @@ In some scenario developers using native platform technologies (like Android/Jav
 
 Starting with Unity 2019.3.0a2, Unity  introduced a new feature to use Unity as a library in native apps by integrating the Unity runtime components and content in a native platform project. The Unity Runtime Library exposes controls to manage when and how to load/activate/unload within the native application.
 
+**Warning**
+
+Using Unity as a Library **requires you have experience with developing for native platform technologies** such as Java/Android, Objective C/iOS, or Windows Win32/UWP. You need to be familiar with the structure of the project, language features and specific platform configuration options (like user permissions for example).
+
+
 **Limitations**
+
 While we tested many scenarios for Unity as a library hosted by a native app, Unity does not control anymore the lifecycle of the runtime, so we cannot guarantee it'll work in all possible use cases. 
 For example:
 - Unity as a Library supports rendering only full screen, rendering on a part of the screen isn’t supported.
@@ -13,6 +19,7 @@ For example:
 - Overhead of having Unity in unloaded state is: 90Mb for Android and 110Mb for iOS
 
 **How it works**
+
 The build process overall is still the same, Unity creates the iOS Xcode and Android Gradle projects and generated iOS Xcode and Android Gradle projects have the following structure:
  A library part (iOS framework and Android Archive (AAR) file) that includes all source & plugins 
  A thin launcher part that includes app representation data and runs library
