@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
 #include <UnityFramework/UnityFramework.h>
-#include <UnityFramework/NativeCallProxy.h>
+#include <UnityFramework/UaaLBirdge.gen.h>
 
 UnityFramework* UnityFrameworkLoad()
 {
@@ -31,8 +31,8 @@ void showAlert(NSString* title, NSString* msg) {
 }
 @interface MyViewController : UIViewController
 @end
-
-@interface AppDelegate : UIResponder<UIApplicationDelegate, UnityFrameworkListener, NativeCallsProtocol>
+ 
+@interface AppDelegate : UIResponder<UIApplicationDelegate, UnityFrameworkListener, NativeAPI>
 
 @property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) UIButton *showUnityOffButton;
@@ -148,12 +148,14 @@ NSDictionary* appLaunchOpts;
     [self showHostMainWindow:@""];
 }
 
-- (void)showHostMainWindow:(NSString*)color
+- (int)showHostMainWindow:(NSString*)color
 {
     if([color isEqualToString:@"blue"]) self.viewController.unpauseBtn.backgroundColor = UIColor.blueColor;
     else if([color isEqualToString:@"red"]) self.viewController.unpauseBtn.backgroundColor = UIColor.redColor;
     else if([color isEqualToString:@"yellow"]) self.viewController.unpauseBtn.backgroundColor = UIColor.yellowColor;
     [self.window makeKeyAndVisible];
+    
+    return 23;
 }
 
 - (void)sendMsgToUnity
@@ -193,7 +195,7 @@ NSDictionary* appLaunchOpts;
     // ODR is not supported in this case, ( if you need embedded and ODR you need to copy data )
     [[self ufw] setDataBundleId: "com.unity3d.framework"];
     [[self ufw] registerFrameworkListener: self];
-    [NSClassFromString(@"FrameworkLibAPI") registerAPIforNativeCalls:self];
+    [[self ufw] registerNativeAPI:self];
     
     [[self ufw] runEmbeddedWithArgc: gArgc argv: gArgv appLaunchOpts: appLaunchOpts];
     

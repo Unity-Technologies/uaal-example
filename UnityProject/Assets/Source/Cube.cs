@@ -5,23 +5,25 @@ using System.Runtime.InteropServices;
 using UnityEngine.UI;
 using UnityEngine;
 
-#if UNITY_IOS || UNITY_TVOS
-public class NativeAPI {
-    [DllImport("__Internal")]
-    public static extern void showHostMainWindow(string lastStringColor);
+using UaaL;
+
+[UaaLiOSHostInterface]
+public interface NativeAPI {
+    int showHostMainWindow(string lastStringColor);
 }
-#endif
 
 public class Cube : MonoBehaviour
 {
     public Text text;    
+    NativeAPI nativeAPI = UaaLPlugin.getInstance<NativeAPI>();
+    
     void appendToText(string line) { text.text += line + "\n"; }
 
     void Update()
     {
         transform.Rotate(0, Time.deltaTime*10, 0);
-		
-		if (Application.platform == RuntimePlatform.Android)
+        
+        if (Application.platform == RuntimePlatform.Android)
             if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
     }
 
@@ -52,8 +54,6 @@ public class Cube : MonoBehaviour
             appendToText("Exception during showHostMainWindow");
             appendToText(e.Message);
         }
-#elif UNITY_IOS || UNITY_TVOS
-        NativeAPI.showHostMainWindow(lastStringColor);
 #endif
     }
 
@@ -63,10 +63,13 @@ public class Cube : MonoBehaviour
         style.fontSize = 30;        
         if (GUI.Button(new Rect(10, 10, 200, 100), "Red", style)) ChangeColor("red");
         if (GUI.Button(new Rect(10, 110, 200, 100), "Blue", style)) ChangeColor("blue");
-        if (GUI.Button(new Rect(10, 300, 400, 100), "Show Main With Color", style)) showHostMainWindow();
+        if (GUI.Button(new Rect(10, 300, 400, 100), "Show Main With Color", style)) {
+            appendToText( "showHostMainWindow result is: "  + nativeAPI.showHostMainWindow(lastStringColor) );
+        }
 
         if (GUI.Button(new Rect(10, 400, 400, 100), "Unload", style)) Application.Unload();
         if (GUI.Button(new Rect(440, 400, 400, 100), "Quit", style)) Application.Quit();
     }
 }
+
 
