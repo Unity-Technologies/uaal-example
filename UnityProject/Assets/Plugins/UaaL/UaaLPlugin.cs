@@ -7,4 +7,9 @@ namespace UaaL {
 		public UaaLiOSHostInterface() {}
 	}
 
+	[AttributeUsage(AttributeTargets.Interface)]
+	public class UaaLiOSUaaLInterface : Attribute {
+		public UaaLiOSUaaLInterface() {}	
+	}
+
 }

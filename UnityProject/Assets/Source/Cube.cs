@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
+
 using UnityEngine.UI;
 using UnityEngine;
 
@@ -12,15 +13,27 @@ public interface NativeAPI {
     int showHostMainWindow(string lastStringColor);
 }
 
-public class Cube : MonoBehaviour
+// https://github.com/Unity-Technologies/iOSNativeCodeSamples/tree/2019-dev/NativeIntegration/UI/OverlayUI
+[UaaLiOSUaaLInterface]
+public interface ScriptingAPI {
+    void appendToText(string line);
+}
+
+public class Cube : MonoBehaviour, ScriptingAPI
 {
     public Text text;    
     NativeAPI nativeAPI = UaaLPlugin.getInstance<NativeAPI>();
-    
-    void appendToText(string line) { text.text += line + "\n"; }
+
+    public void appendToText(string line) { text.text += line + "\n"; }
+
+    Cube() {
+        UaaLPlugin.setInterface<ScriptingAPI>(this);
+    }
 
     void Update()
     {
+        //CScriptingAPI.ShowNativeDatePicker(CScriptingAPI.DateSelectedCallback);
+                
         transform.Rotate(0, Time.deltaTime*10, 0);
         
         if (Application.platform == RuntimePlatform.Android)

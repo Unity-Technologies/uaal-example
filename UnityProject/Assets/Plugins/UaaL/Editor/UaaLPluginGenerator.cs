@@ -44,6 +44,11 @@ namespace UaaL {
 public partial class UaaLPluginGenerator
 {	
 	// TODO pavell: support for simple types https://docs.microsoft.com/en-us/dotnet/csharp/tour-of-csharp/types-and-variables
+	// TODO pavell: support delegate type
+	struct TypeiOSDetails {
+
+	}
+
 	static private Dictionary<Type,string> mapTypesToObjc  = new Dictionary<Type, string>() { 
 		{typeof(void), "void"}, 
 		{typeof(string),"NSString*"},
@@ -251,37 +256,39 @@ extern ""C"" {{
 	}
 	
 
-	static string genCSSource() {
-		var hostInterfaces = UnityEditor.TypeCache.GetTypesWithAttribute<UaaLiOSHostInterface>();		
-		var registerMethods = new List<string>();		
+	class iOSGenerator {
+		string csSourceProxyClasses;
+		List<string> csSourceGetInstance = new List<string>();
+		List<string> csSourceSetInstance = new List<string>();
 
-		string result = "";
-		var createInstance = new List<string>();
+		void genHostInterface() {
+			var hostInterfaces = UnityEditor.TypeCache.GetTypesWithAttribute<UaaLiOSHostInterface>();		
+			var registerMethods = new List<string>();		
 
-        foreach (var interfaceType in hostInterfaces)
-        {
-        	var csStaticiOSMethods = new List<string>();
-        	var csStaticMethods = new List<string>();
-
-        	MemberInfo[] interfaceMethods;
-	    	interfaceMethods = interfaceType.GetMethods();
-
-	    	string className = "UaaLPlugin_" + interfaceType.Name;
-	    	createInstance.Add( string.Format("if( typeof(T) == typeof({0})) return (new {1}()) as T;", interfaceType.Name, className) );
-
-	        for (int i =0 ; i < interfaceMethods.Length ; i++)
+	        foreach (var interfaceType in hostInterfaces)
 	        {
-	        	MethodInfo method = interfaceType.GetMethod(interfaceMethods[i].Name);
-	        	var m = formatCSMethodDef(method, interfaceType.Name + "_");
-	        	csStaticiOSMethods.Add( "[DllImport(\"__Internal\")]" );
-	            csStaticiOSMethods.Add( String.Format( "public static extern {0};", m ) );	            
+	        	var csStaticiOSMethods = new List<string>();
+	        	var csStaticMethods = new List<string>();
+
+	        	MemberInfo[] interfaceMethods;
+		    	interfaceMethods = interfaceType.GetMethods();
+
+		    	string className = "UaaLPlugin_" + interfaceType.Name;
+		    	csSourceGetInstance.Add( string.Format("if( typeof(T) == typeof({0})) return (new {1}()) as T;", interfaceType.Name, className) );
+
+		        for (int i =0 ; i < interfaceMethods.Length ; i++)
+		        {
+		        	MethodInfo method = interfaceType.GetMethod(interfaceMethods[i].Name);
+		        	var m = formatCSMethodDef(method, interfaceType.Name + "_");
+		        	csStaticiOSMethods.Add( "[DllImport(\"__Internal\")]" );
+		            csStaticiOSMethods.Add( String.Format( "public static extern {0};", m ) );	            
 
 
-	            var returnType = method.ReturnParameter.ParameterType;
+		            var returnType = method.ReturnParameter.ParameterType;
 
-				m = formatCSMethodDef(method); 
-				string mC = formatCSMethodCall(method, interfaceType.Name + "_");
-	            csStaticMethods.Add( String.Format(
+					m = formatCSMethodDef(method); 
+					string mC = formatCSMethodCall(method, interfaceType.Name + "_");
+		            csStaticMethods.Add( String.Format(
 @"public {0} {{
 		#if UNITY_EDITOR
 		#elif UNITY_IOS || UNITY_TVOS	
@@ -297,7 +304,7 @@ extern ""C"" {{
 		));
 	        } 			
 
-	        result += string.Format(	
+	        csSourceProxyClasses += string.Format(	
 @"public class {0} : {1}
 {{
 #if UNITY_IOS || UNITY_TVOS
@@ -310,9 +317,76 @@ extern ""C"" {{
 
 }}
 ",	className, interfaceType.Name, string.Join("\n\t",csStaticiOSMethods), string.Join("\n\t",csStaticMethods));
-        }
+        	}
+		}
+
+		void genUaaLInterface() {
+			var uaalInterfaces = UnityEditor.TypeCache.GetTypesWithAttribute<UaaLiOSUaaLInterface>();		
+			var createInstance = new List<string>();
+
+	        foreach (var interfaceType in uaalInterfaces)
+	        {
+	        	string className = "UaaLPlugin_" + interfaceType.Name;
+	        	var classMethods = new List<string>();
+	        	var registerMethods = new List<string>();
+
+				MemberInfo[] interfaceMethods;
+		    	interfaceMethods = interfaceType.GetMethods();
 
 
+		    	for (int i =0 ; i < interfaceMethods.Length ; i++)
+		        {
+			    	MethodInfo method = interfaceType.GetMethod(interfaceMethods[i].Name);
+			        var mDelegate = formatCSMethodDef(method, "delegate" + "_");
+			        var mDef = formatCSMethodDef(method);
+			        var mCall = formatCSMethodCall(method);
+
+			        string delegateName = string.Format("delegate_{0}", method.Name);
+
+			        classMethods.Add( string.Format("public delegate {0};",mDelegate));
+			        classMethods.Add( string.Format("[AOT.MonoPInvokeCallback (typeof({0}))]", delegateName));
+			        classMethods.Add( string.Format("public static {0} {{ instance.{1}; }}", mDef, mCall));
+
+			        string setCallbackName = string.Format("setCallback_{0}_{1}",interfaceType.Name, method.Name);
+			        classMethods.Add( "[DllImport(\"__Internal\")]");
+    				classMethods.Add( string.Format("public static extern void {0}({1} callback);", setCallbackName, delegateName));
+    				classMethods.Add("");
+
+    				registerMethods.Add( string.Format("{0}({1});",setCallbackName,method.Name) );
+				}
+
+	        	csSourceSetInstance.Add(string.Format("if( typeof(T) ==typeof({0}) ) {{ {1}.setInstance(instance as {0}); return; }}", interfaceType.Name,className) );
+	        	csSourceProxyClasses += string.Format(
+@"public class {1} {{
+	static {0} instance = null;
+
+	#if UNITY_EDITOR
+	#elif UNITY_IOS || UNITY_TVOS	
+	{2}
+	#endif
+
+	static bool setCallbacks = true;
+	public static void setInstance({0} aInstance) {{
+		if(setCallbacks) {{
+			#if UNITY_EDITOR
+			#elif UNITY_IOS || UNITY_TVOS	
+			{3}
+			#endif
+			setCallbacks = false;
+		}}
+		instance = aInstance;
+	}}
+
+}}",interfaceType.Name, className, string.Join("\n\t", classMethods), string.Join("\n\t\t", registerMethods));
+	        }
+		} 
+
+		public void gen() {
+			genHostInterface();
+			genUaaLInterface();
+		}
+
+		public string getCSSource() {
        return string.Format(
 @"// Automatically generated by UaaLPluginGenerator
 // If interface name was modifyed/removed you will need to fix this manually
@@ -335,8 +409,15 @@ public partial class UaaLPlugin : MonoBehaviour
 		#endif
 		return default(T);
 	}}
+
+	public static void setInterface<T>(T instance) where T: class {{
+		#if USE_INTERFACES
+		{2}
+		#endif
+	}}
 }}
-", result, string.Join("\n\t\t",createInstance) );
+", csSourceProxyClasses, string.Join("\n\t\t",csSourceGetInstance), string.Join("\n\t\t",csSourceSetInstance) );			
+		}
 	}
 
 	static void WriteFile(string projectRelPath, string content) {
@@ -359,8 +440,12 @@ public partial class UaaLPlugin : MonoBehaviour
 		WriteFile( iOSObjcSourceFilePath, mmSource );
 		
 		// SC interface implementation
-		var scSource = genCSSource();
+		var gen = new iOSGenerator();
+		gen.gen();
+		var scSource = gen.getCSSource();
 		WriteFile( "Assets/UaaLPlugin.gen.cs", scSource );
+
+		Debug.Log("UaaLPlugin Done generating UaaLPlugin files.");
 	}
 }
 

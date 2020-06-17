@@ -15,8 +15,7 @@ public class UaaLPluginBuild : IPreprocessBuildWithReport
 
     public void OnPreprocessBuild(UnityEditor.Build.Reporting.BuildReport report)
     {    	
-    	UaaLPluginGenerator.GenerateCode();
-        Debug.Log("UaaLPlugin Done generating UaaLPlugin files.");
+    	UaaLPluginGenerator.GenerateCode();        
     }
 
     public int callbackOrder { get { return 0; } }
