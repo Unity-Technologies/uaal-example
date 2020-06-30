@@ -2,10 +2,7 @@
 // If interface name was modifyed/removed you will need to fix this manually
 // if you having compile issues COMMENT NEXT LINE
 
-#define USE_INTERFACES
-
-using UnityEngine;
-using System.Runtime.InteropServices;
+#define USE_UAAL_GENCODE
 
 public partial class UaaLPlugin : MonoBehaviour
 {
@@ -13,6 +10,6 @@ public partial class UaaLPlugin : MonoBehaviour
 		return default(T);
 	}
 
-	public static void setInterface<T>(T instance) where T: class {	
+	public static void setInterface<T>(T instance) where T: class {
 	}
 }
