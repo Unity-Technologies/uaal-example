@@ -46,7 +46,7 @@ This document explains how to include Unity as a Library into standard Android a
   ```
   <img src="images/android/buildGradleNativeApp.png">
 - Copy gradle.properties file from exported Unity project root folder to native application root folder or create a symlink to make sure that this file is always up to date
-  <img src="images/android/exportedASProject.png">
+  <br><img src="images/android/exportedASProject.png">
 - Click Sync Now to do a project sync since Gradle files have been modified
   <img src="images/android/syncGradle.png">
 - If everything succeeds, you should see unityLibrary module added in Android view
