@@ -18,6 +18,13 @@ android {
         applicationId "com.unity.mynativeapp"
         minSdkVersion 19
         targetSdkVersion 28
+        ndk {
+            // By default all ABIs would be added if non is defined
+            // Clear method should clear ABIs list forcing app to respect its' modules settings (unityLibrary in this case)
+            // Default ABIs list would be set later, therefore clear would not work here without setting some values first
+            abiFilters "armeabi-v7a", "arm64-v8a"
+            abiFilters.clear()
+        }
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
