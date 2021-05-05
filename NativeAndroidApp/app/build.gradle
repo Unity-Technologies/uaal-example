@@ -16,7 +16,7 @@ android {
 
     defaultConfig {
         applicationId "com.unity.mynativeapp"
-        minSdkVersion 19
+        minSdkVersion 22
         targetSdkVersion 28
         ndk {
             // By default all ABIs would be added if non is defined
