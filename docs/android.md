@@ -64,7 +64,10 @@ Main Activity | Unity is loaded and is running in a separate Activity. Light gre
 
 ## Notes
 - Unity is running in another process android:process=":Unity" (AndroidManifest.xml at app module)
-- After installation there will be two icons added on the device. To leave only the icon of the main activity, remove <intent-filter>...</intent-filter> from the AndroidManifest.xml in unityLibrary
+- After installation there will be two icons added on the device. To leave only the icon of the main activity, remove "intent-filter" section from the AndroidManifest.xml in unityLibrary
+  ```xml
+  <intent-filter>...</intent-filter>
+  ```
 - (Optional) We found some Android 7.* devices set frontOfTask to wrong state for activities as a result when finishing/quitting Unity activity whole task goes to background instead of bringing back Main activity. Next workaround keeps expected behavior: add to MainUnityActivity.java from NativeAndroidApp
   ```
   @Override public void onUnityPlayerQuitted() { showMainActivity(""); finish(); }
