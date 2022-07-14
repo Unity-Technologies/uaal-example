@@ -4,6 +4,7 @@ This document explains how to include Unity as a Library into standard Android a
 **Requirements:**
 - Android Studio 3.4.2+
 - Unity version 2019.3.0b4+
+Note: Unity 2022.2+ uses Gradle 7.2 by default which has different gradle project configuration. The example can still work there, but will require more manual changes. Consider using master or other updated branch.
 
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
