@@ -4,6 +4,7 @@ This document explains how to include Unity as a Library into standard Android a
 **Requirements:**
 - Android Studio Bumblebee (2021.1.1) or later
 - Unity version 2022.2.0a18 or later
+[Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [this branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS)
 
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
