@@ -26,3 +26,6 @@ The build process overall is still the same, Unity creates the iOS Xcode and And
 
 Step by step explanations on how to include the [iOS](docs/ios.md) / [Android](docs/android.md) library part into your native application when needed.
 
+# Unity to iOS and Android Bridge #
+
+Bride extensions aim to facilitate comunications between Unity and native iOS/Android environments
