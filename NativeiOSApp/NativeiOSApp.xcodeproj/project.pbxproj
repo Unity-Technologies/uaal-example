@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -13,24 +13,8 @@
 		9D15FC4F2264A1600006315A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9D15FC4D2264A1600006315A /* LaunchScreen.storyboard */; };
 		9D78DAFD2265A7FC00274039 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D78DAFC2265A7FC00274039 /* UIKit.framework */; };
 		AB15CC9C2A24B22100AB6C1C /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AB15CC9A2A24B22100AB6C1C /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		ABD838A92A26305E008CEE2D /* SwiftBridge in Frameworks */ = {isa = PBXBuildFile; productRef = ABD838A82A26305E008CEE2D /* SwiftBridge */; };
 /* End PBXBuildFile section */
-
-/* Begin PBXContainerItemProxy section */
-		ABD8389A2A24DC92008CEE2D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ABD838952A24DC92008CEE2D /* SwiftUnityBridge.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABD8387B2A24DC62008CEE2D;
-			remoteInfo = SwiftUnityBridge;
-		};
-		ABD8389C2A24DC92008CEE2D /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = ABD838952A24DC92008CEE2D /* SwiftUnityBridge.xcodeproj */;
-			proxyType = 2;
-			remoteGlobalIDString = ABD838852A24DC63008CEE2D;
-			remoteInfo = SwiftUnityBridgeTests;
-		};
-/* End PBXContainerItemProxy section */
 
 /* Begin PBXCopyFilesBuildPhase section */
 		AB15CC9D2A24B22100AB6C1C /* Embed Frameworks */ = {
@@ -55,7 +39,6 @@
 		9D15FC502264A1600006315A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D78DAFC2265A7FC00274039 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AB15CC9A2A24B22100AB6C1C /* UnityFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		ABD838952A24DC92008CEE2D /* SwiftUnityBridge.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = SwiftUnityBridge.xcodeproj; path = ../SwiftUnityBridge/SwiftUnityBridge.xcodeproj; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,6 +47,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D78DAFD2265A7FC00274039 /* UIKit.framework in Frameworks */,
+				ABD838A92A26305E008CEE2D /* SwiftBridge in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -73,7 +57,6 @@
 		9D15FC362264A15F0006315A = {
 			isa = PBXGroup;
 			children = (
-				ABD838952A24DC92008CEE2D /* SwiftUnityBridge.xcodeproj */,
 				9D15FC412264A1600006315A /* NativeiOSApp */,
 				9D15FC402264A1600006315A /* Products */,
 				9D78DAFB2265A7FC00274039 /* Frameworks */,
@@ -109,15 +92,6 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
-		ABD838962A24DC92008CEE2D /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				ABD8389B2A24DC92008CEE2D /* SwiftUnityBridge.framework */,
-				ABD8389D2A24DC92008CEE2D /* SwiftUnityBridgeTests.xctest */,
-			);
-			name = Products;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -135,6 +109,9 @@
 			dependencies = (
 			);
 			name = NativeiOSApp;
+			packageProductDependencies = (
+				ABD838A82A26305E008CEE2D /* SwiftBridge */,
+			);
 			productName = NativeiOSApp;
 			productReference = 9D15FC3F2264A1600006315A /* NativeiOSApp.app */;
 			productType = "com.apple.product-type.application";
@@ -164,35 +141,12 @@
 			mainGroup = 9D15FC362264A15F0006315A;
 			productRefGroup = 9D15FC402264A1600006315A /* Products */;
 			projectDirPath = "";
-			projectReferences = (
-				{
-					ProductGroup = ABD838962A24DC92008CEE2D /* Products */;
-					ProjectRef = ABD838952A24DC92008CEE2D /* SwiftUnityBridge.xcodeproj */;
-				},
-			);
 			projectRoot = "";
 			targets = (
 				9D15FC3E2264A15F0006315A /* NativeiOSApp */,
 			);
 		};
 /* End PBXProject section */
-
-/* Begin PBXReferenceProxy section */
-		ABD8389B2A24DC92008CEE2D /* SwiftUnityBridge.framework */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.framework;
-			path = SwiftUnityBridge.framework;
-			remoteRef = ABD8389A2A24DC92008CEE2D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-		ABD8389D2A24DC92008CEE2D /* SwiftUnityBridgeTests.xctest */ = {
-			isa = PBXReferenceProxy;
-			fileType = wrapper.cfbundle;
-			path = SwiftUnityBridgeTests.xctest;
-			remoteRef = ABD8389C2A24DC92008CEE2D /* PBXContainerItemProxy */;
-			sourceTree = BUILT_PRODUCTS_DIR;
-		};
-/* End PBXReferenceProxy section */
 
 /* Begin PBXResourcesBuildPhase section */
 		9D15FC3D2264A15F0006315A /* Resources */ = {
@@ -408,6 +362,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		ABD838A82A26305E008CEE2D /* SwiftBridge */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = SwiftBridge;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 9D15FC372264A15F0006315A /* Project object */;
 }

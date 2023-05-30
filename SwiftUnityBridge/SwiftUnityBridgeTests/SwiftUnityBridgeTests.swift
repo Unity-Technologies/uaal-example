@@ -8,6 +8,12 @@
 import XCTest
 @testable import SwiftUnityBridge
 
+struct SimplePayload : Decodable {
+    let a : String
+    let b : Int
+    let c : Float
+}
+
 final class SwiftUnityBridgeTests: XCTestCase {
 
     override func setUpWithError() throws {
@@ -17,13 +23,19 @@ final class SwiftUnityBridgeTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
+    
     func testExample() throws {
         // This is an example of a functional test case.
         // Use XCTAssert and related functions to verify your tests produce the correct results.
         // Any test you write for XCTest can be annotated as throws and async.
         // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
         // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    }
+    
+    func testSimplePayload() throws {
+        let _ = BridgeListener.instance.notifications
+            .decode(path: "a")
+            .sink { (p : SimplePayload) in print(p) }
     }
 
     func testPerformanceExample() throws {

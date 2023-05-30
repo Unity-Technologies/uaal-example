@@ -16,18 +16,6 @@ id<UnityNotificationsDelegate> notificationsDelegate = NULL;
     notificationsDelegate = aApi;
 }
 
-id<UnityOutgoingWorkflowDelegate> outgoingWorkflowDelegate = NULL;
-+(void) registerAPIforOutgoingWorkflowDelegate:(id<UnityOutgoingWorkflowDelegate>) aApi
-{
-    outgoingWorkflowDelegate = aApi;
-}
-
-id<UnityIncomingWorkflowDelegate> incomingWorkflowDelegate = NULL;
-+(void) registerAPIforIncomingWorkflowDelegate:(id<UnityIncomingWorkflowDelegate>) aApi
-{
-    incomingWorkflowDelegate = aApi;
-}
-
 @end
 
 

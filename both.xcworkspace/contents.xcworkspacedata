@@ -2,7 +2,7 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:NativeiOSApp/../SwiftUnityBridge/SwiftUnityBridge.xcodeproj">
+      location = "group:SwiftBridge">
    </FileRef>
    <FileRef
       location = "group:NativeiOSApp/../UnityProject/iosBuild/Unity-iPhone.xcodeproj">
