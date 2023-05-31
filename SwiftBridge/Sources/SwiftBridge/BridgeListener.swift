@@ -9,14 +9,12 @@ import Combine
 
 public struct BridgePayload : Codable {
     
-    static let name = NSNotification.Name(rawValue: "BrideIncomingPayloadNotification")
-    static let payloadKey = "BrideIncomingPayloadKey"
+    static let notificationName = NSNotification.Name(rawValue: "BrideIncomingPayloadNotification")
+    static let notificationPayloadKey = "BrideIncomingPayloadKey"
     
     let path : String
     let content : String
 }
-
-
 
 public class BridgeListener {
     
@@ -28,11 +26,11 @@ public class BridgeListener {
     private let subject = PassthroughSubject<BridgePayload, Never>()
     
     private init() {
-        subscription = NotificationCenter.default.publisher(for: BridgePayload.name).sink { value in
+        subscription = NotificationCenter.default.publisher(for: BridgePayload.notificationName).sink { value in
             guard let userInfo = value.userInfo else {
                 return
             }
-            guard let raw = userInfo[BridgePayload.payloadKey] else {
+            guard let raw = userInfo[BridgePayload.notificationPayloadKey] else {
                 return
             }
             guard let notification = raw as? BridgePayload else {
