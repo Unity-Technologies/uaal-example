@@ -7,16 +7,27 @@
 import Foundation
 import Combine
 
-public struct BridgePayload : Codable {
-    
+public class BridgeNotification : NSObject {
     static let notificationName = NSNotification.Name(rawValue: "BrideIncomingPayloadNotification")
-    static let notificationPayloadKey = "BrideIncomingPayloadKey"
-    
-    let path : String
-    let content : String
+    static let notificationPathKey = "BrideIncomingPathKey"
+    static let notificationContentKey = "BrideIncomingContentKey"
 }
 
-public class BridgeListener {
+public struct BridgePayload : Codable {
+    public let path : String
+    public let content : String
+    // need to define explicitely for use outside package
+    public init(path: String, content: String) {
+        self.path = path
+        self.content = content
+    }
+}
+
+public protocol BridgeListener {
+    var notifications : AnyPublisher<BridgePayload, Never> { get }
+}
+
+public class DefaultBridgeListener : BridgeListener {
     
     public var notifications : AnyPublisher<BridgePayload, Never> {
         subject.eraseToAnyPublisher()
@@ -26,17 +37,17 @@ public class BridgeListener {
     private let subject = PassthroughSubject<BridgePayload, Never>()
     
     private init() {
-        subscription = NotificationCenter.default.publisher(for: BridgePayload.notificationName).sink { value in
+        subscription = NotificationCenter.default.publisher(for: BridgeNotification.notificationName).sink { value in
             guard let userInfo = value.userInfo else {
                 return
             }
-            guard let raw = userInfo[BridgePayload.notificationPayloadKey] else {
+            guard let path = userInfo[BridgeNotification.notificationPathKey] as? String else {
                 return
             }
-            guard let notification = raw as? BridgePayload else {
+            guard let content = userInfo[BridgeNotification.notificationContentKey] as? String else {
                 return
             }
-            self.subject.send(notification)
+            self.subject.send(BridgePayload(path: path, content: content))
         }
     }
     

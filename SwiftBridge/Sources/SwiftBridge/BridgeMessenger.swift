@@ -7,17 +7,17 @@
 import Foundation
 
 public protocol BridgeMessenger {
-    func sendPayload(path: String, content: String)
+    func sendPayload(path: String, content: String) throws
 }
 
 public extension BridgeMessenger {
     
-    func sendPayload(payload: BridgePayload) {
-        self.sendPayload(path: payload.path, content: payload.content)
+    func sendPayload(payload: BridgePayload) throws {
+        try self.sendPayload(path: payload.path, content: payload.content)
     }
     
-    func sendPayload(path: String, data: Data) {
-        sendPayload(path: path, content: String(decoding: data, as: UTF8.self))
+    func sendPayload(path: String, data: Data) throws {
+        try sendPayload(path: path, content: String(decoding: data, as: UTF8.self))
     }
     
 }

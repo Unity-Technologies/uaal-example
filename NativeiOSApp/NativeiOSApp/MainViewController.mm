@@ -1,7 +1,7 @@
 #import <UIKit/UIKit.h>
 
-#include <UnityFramework/UnityFramework.h>
-#include <UnityFramework/NativeCallProxy.h>
+#import "AppDelegate.h"
+#import "NativeiOSApp-Swift.h"
 
 UnityFramework* UnityFrameworkLoad()
 {
@@ -32,11 +32,10 @@ void showAlert(NSString* title, NSString* msg) {
 @interface MyViewController : UIViewController
 @end
 
-@interface AppDelegate : UIResponder<UIApplicationDelegate, UnityFrameworkListener, NativeCallsProtocol>
+@interface AppDelegate ()
 
-@property (strong, nonatomic) UIWindow *window;
 @property (nonatomic, strong) UIButton *showUnityOffButton;
-@property (nonatomic, strong) UIButton *btnSendMsg;
+@property (nonatomic, strong) UIButton *bridgeDemoBtn;
 @property (nonatomic, strong) UINavigationController *navVC;
 @property (nonatomic, strong) UIButton *unloadBtn;
 @property (nonatomic, strong) UIButton *quitBtn;
@@ -156,9 +155,28 @@ NSDictionary* appLaunchOpts;
     [self.window makeKeyAndVisible];
 }
 
-- (void)sendMsgToUnity
+// used to ease call from swift
+- (void)sendMessageToGOWithName:(NSString*)goName functionName:(NSString*)name message:(NSString*)msg
+{
+    [[self ufw] sendMessageToGOWithName: goName.UTF8String functionName: name.UTF8String message: msg.UTF8String];
+}
+
+- (void) payloadNotification:(NSString*)path:(NSString*)content
+{
+    NSDictionary* userInfo = @{
+        @"BrideIncomingPathKey": path,
+        @"BrideIncomingContentKey": content,
+    };
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"BrideIncomingPayloadNotification" object:nil userInfo:userInfo];
+}
+
+- (void)startBridgeDemo
 {
     [[self ufw] sendMessageToGOWithName: "Cube" functionName: "ChangeColor" message: "yellow"];
+    
+    BridgeDemo* demo = [[BridgeDemo alloc] init];
+    [demo start];
+    
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
@@ -194,6 +212,7 @@ NSDictionary* appLaunchOpts;
     [[self ufw] setDataBundleId: "com.unity3d.framework"];
     [[self ufw] registerFrameworkListener: self];
     [NSClassFromString(@"FrameworkLibAPI") registerAPIforNativeCalls:self];
+    [NSClassFromString(@"FrameworkLibAPI") registerAPIforUnityNotifications:self];
     
     [[self ufw] runEmbeddedWithArgc: gArgc argv: gArgv appLaunchOpts: appLaunchOpts];
     
@@ -211,13 +230,13 @@ NSDictionary* appLaunchOpts;
         [view addSubview: self.showUnityOffButton];
         [self.showUnityOffButton addTarget: self action: @selector(showHostMainWindow) forControlEvents: UIControlEventPrimaryActionTriggered];
         
-        self.btnSendMsg = [UIButton buttonWithType: UIButtonTypeSystem];
-        [self.btnSendMsg setTitle: @"Send Msg" forState: UIControlStateNormal];
-        self.btnSendMsg.frame = CGRectMake(0, 0, 100, 44);
-        self.btnSendMsg.center = CGPointMake(150, 300);
-        self.btnSendMsg.backgroundColor = [UIColor yellowColor];
-        [view addSubview: self.btnSendMsg];
-        [self.btnSendMsg addTarget: self action: @selector(sendMsgToUnity) forControlEvents: UIControlEventPrimaryActionTriggered];
+        self.bridgeDemoBtn = [UIButton buttonWithType: UIButtonTypeSystem];
+        [self.bridgeDemoBtn setTitle: @"Bridge Demo" forState: UIControlStateNormal];
+        self.bridgeDemoBtn.frame = CGRectMake(0, 0, 100, 44);
+        self.bridgeDemoBtn.center = CGPointMake(150, 300);
+        self.bridgeDemoBtn.backgroundColor = [UIColor yellowColor];
+        [view addSubview: self.bridgeDemoBtn];
+        [self.bridgeDemoBtn addTarget: self action: @selector(startBridgeDemo) forControlEvents: UIControlEventPrimaryActionTriggered];
         
         // Unload
         self.unloadBtn = [UIButton buttonWithType: UIButtonTypeSystem];

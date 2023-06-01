@@ -12,26 +12,14 @@
 
 @protocol UnityNotificationsDelegate
 @required
-- (void) payloadNotification:(NSString*)payloadType:(NSString*)payloadContent;
+- (void) payloadNotification:(NSString*)path:(NSString*)payload;
 @end
-
-@protocol UnityOutgoingWorkflowDelegate
-@required
-- (void) requestNativeWorkflow:(NSString*)identifier:(NSString*)path:(NSString*)payload;
-- (void) cancelNativeWorkflow:(NSString*)identifier;
-@end
-
-@protocol UnityIncomingWorkflowDelegate
-@required
-- (void) completedUnityWorkflow:(NSString*)identifier:(NSNumber*)success:(NSString*)result;
-@end
-
 
 __attribute__ ((visibility("default")))
 @interface FrameworkLibAPI : NSObject
 // call it any time after UnityFrameworkLoad to set object implementing NativeCallsProtocol methods
 +(void) registerAPIforNativeCalls:(id<NativeCallsProtocol>) aApi;
-
++(void) registerAPIforUnityNotifications:(id<UnityNotificationsDelegate>) aApi;
 @end
 
 

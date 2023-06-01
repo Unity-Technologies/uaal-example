@@ -14,6 +14,7 @@
 		9D78DAFD2265A7FC00274039 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9D78DAFC2265A7FC00274039 /* UIKit.framework */; };
 		AB15CC9C2A24B22100AB6C1C /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = AB15CC9A2A24B22100AB6C1C /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		ABD838A92A26305E008CEE2D /* SwiftBridge in Frameworks */ = {isa = PBXBuildFile; productRef = ABD838A82A26305E008CEE2D /* SwiftBridge */; };
+		ABD838AC2A2898EF008CEE2D /* BridgeDemo.swift in Sources */ = {isa = PBXBuildFile; fileRef = ABD838AB2A2898EF008CEE2D /* BridgeDemo.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -39,6 +40,9 @@
 		9D15FC502264A1600006315A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		9D78DAFC2265A7FC00274039 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		AB15CC9A2A24B22100AB6C1C /* UnityFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		ABD838AA2A2898EF008CEE2D /* NativeiOSApp-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NativeiOSApp-Bridging-Header.h"; sourceTree = "<group>"; };
+		ABD838AB2A2898EF008CEE2D /* BridgeDemo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BridgeDemo.swift; sourceTree = "<group>"; };
+		ABD838B32A28DBFA008CEE2D /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,6 +83,9 @@
 				9D15FC4B2264A1600006315A /* Assets.xcassets */,
 				9D15FC4D2264A1600006315A /* LaunchScreen.storyboard */,
 				9D15FC502264A1600006315A /* Info.plist */,
+				ABD838AB2A2898EF008CEE2D /* BridgeDemo.swift */,
+				ABD838AA2A2898EF008CEE2D /* NativeiOSApp-Bridging-Header.h */,
+				ABD838B32A28DBFA008CEE2D /* AppDelegate.h */,
 			);
 			path = NativeiOSApp;
 			sourceTree = "<group>";
@@ -127,6 +134,7 @@
 				TargetAttributes = {
 					9D15FC3E2264A15F0006315A = {
 						CreatedOnToolsVersion = 10.1;
+						LastSwiftMigration = 1420;
 					};
 				};
 			};
@@ -167,6 +175,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9D15FC472264A1600006315A /* MainViewController.mm in Sources */,
+				ABD838AC2A2898EF008CEE2D /* BridgeDemo.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -308,16 +317,20 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = Z74NVH95C5;
 				INFOPLIST_FILE = NativeiOSApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.unity.nativeiOSApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NativeiOSApp/NativeiOSApp-Bridging-Header.h";
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -326,16 +339,19 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = ZE6P334QKR;
 				INFOPLIST_FILE = NativeiOSApp/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 13.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = com.unity.nativeiOSApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_OBJC_BRIDGING_HEADER = "NativeiOSApp/NativeiOSApp-Bridging-Header.h";
+				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

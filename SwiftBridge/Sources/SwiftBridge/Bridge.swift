@@ -8,7 +8,7 @@ import Foundation
 import Combine
 
 fileprivate protocol WorkflowImplementation {
-    func perform(identifier: String, payload: String) async
+    func perform(identifier: String, payload: String) async throws
 }
 
 public class Bridge {
@@ -45,7 +45,7 @@ public class Bridge {
     private let decoder = JSONDecoder()
     
     // actual running tasks launched from WorkflowImplementation
-    private var incomingWorkflowTasks : [String:Task<Void, Never>] = [:]
+    private var incomingWorkflowTasks : [String:Task<Void, Error>] = [:]
     // registered implementations used to create tasks for a procedure
     private var incomingWorkflowImplementations : [String:WorkflowImplementation] = [:]
     private var requestSubscription : AnyCancellable?
@@ -64,13 +64,16 @@ public class Bridge {
                     return
                 }
                 self.incomingWorkflowTasks[request.identifier] = Task { () -> Void in
-                    await implementation.perform(identifier: request.identifier, payload: request.payload)
+                    try await implementation.perform(identifier: request.identifier, payload: request.payload)
                 }
         }
         self.cancelSubscription = listener.notifications
             .decode(path: WorkflowCancellation.path)
-            .sink { (cancellation : WorkflowCancellation) in
-            
+            .sink { [weak self] (cancellation : WorkflowCancellation) in
+                guard let task = self?.incomingWorkflowTasks[cancellation.identifier] else {
+                    return
+                }
+                task.cancel()
             }
     }
     
@@ -108,7 +111,7 @@ public class Bridge {
                         throw OutgoingWorkflowError.failedEncoding
                     }
                     let request = WorkflowRequest(identifier: identifier, procedure: procedure, payload: payload)
-                    messenger.sendPayload(path: WorkflowRequest.path, data: try encoder.encode(request))
+                    try messenger.sendPayload(path: WorkflowRequest.path, data: try encoder.encode(request))
                 } catch {
                     subscription.cancel()
                     continuation.resume(throwing: error)
@@ -116,7 +119,7 @@ public class Bridge {
             }
         }, onCancel: {
             if let data = try? self.encoder.encode(WorkflowCancellation(identifier: identifier)) {
-                messenger.sendPayload(path: WorkflowCancellation.path, data:data)
+                try? messenger.sendPayload(path: WorkflowCancellation.path, data:data)
             }
         })
     }
@@ -149,20 +152,20 @@ public class Bridge {
             self.bridge = bridge
         }
         
-        func perform(identifier: String, payload: String) async {
+        func perform(identifier: String, payload: String) async throws {
             do {
                 let decoded = try bridge.decoder.decode(TPayload.self, from: Data(payload.utf8))
                 let value = try await callback(decoded)
                 let encoded = try bridge.encoder.encode(value)
                 let result = WorkflowResult(identifier: identifier, result: String(decoding: encoded, as: UTF8.self))
-                bridge.messenger.sendPayload(path: WorkflowResult.path, data: try bridge.encoder.encode(result))
+                try bridge.messenger.sendPayload(path: WorkflowResult.path, data: try bridge.encoder.encode(result))
             } catch is CancellationError {
                 if let cancellation = try? bridge.encoder.encode(WorkflowCancellation(identifier: identifier)) {
-                    bridge.messenger.sendPayload(path: WorkflowCancellation.path, data: cancellation)
+                    try bridge.messenger.sendPayload(path: WorkflowCancellation.path, data: cancellation)
                 }
             } catch {
                 if let failure = try? bridge.encoder.encode(WorkflowFailure(identifier: identifier, type: "\(error)", message: "")) {
-                    bridge.messenger.sendPayload(path: WorkflowFailure.path, data: failure)
+                    try bridge.messenger.sendPayload(path: WorkflowFailure.path, data: failure)
                 }
             }
         }
