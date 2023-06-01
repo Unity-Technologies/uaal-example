@@ -6,11 +6,11 @@
 
 import Foundation
 
-protocol BridgeMessenger {
+public protocol BridgeMessenger {
     func sendPayload(path: String, content: String)
 }
 
-extension BridgeMessenger {
+public extension BridgeMessenger {
     
     func sendPayload(payload: BridgePayload) {
         self.sendPayload(path: payload.path, content: payload.content)

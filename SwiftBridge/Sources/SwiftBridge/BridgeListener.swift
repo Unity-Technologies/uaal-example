@@ -41,13 +41,12 @@ public class BridgeListener {
     }
     
     deinit {
-        subscription?.cancel()
+        subscription = nil
     }
-    
 }
 
 
-extension Publisher {
+public extension Publisher {
     
     func decode<T:Decodable>(path: String) -> AnyPublisher<T, Self.Failure> where Output == BridgePayload {
         self
