@@ -13,7 +13,7 @@ public class BridgeNotification : NSObject {
     static let notificationContentKey = "BrideIncomingContentKey"
 }
 
-public struct BridgePayload : Codable {
+public struct BridgeMessage : Codable {
     public let path : String
     public let content : String
     // need to define explicitely for use outside package
@@ -24,17 +24,17 @@ public struct BridgePayload : Codable {
 }
 
 public protocol BridgeListener {
-    var notifications : AnyPublisher<BridgePayload, Never> { get }
+    var messages : AnyPublisher<BridgeMessage, Never> { get }
 }
 
 public class DefaultBridgeListener : BridgeListener {
     
-    public var notifications : AnyPublisher<BridgePayload, Never> {
+    public var messages : AnyPublisher<BridgeMessage, Never> {
         subject.eraseToAnyPublisher()
     }
     
     private var subscription : AnyCancellable?
-    private let subject = PassthroughSubject<BridgePayload, Never>()
+    private let subject = PassthroughSubject<BridgeMessage, Never>()
     
     private init() {
         subscription = NotificationCenter.default.publisher(for: BridgeNotification.notificationName).sink { value in
@@ -47,21 +47,23 @@ public class DefaultBridgeListener : BridgeListener {
             guard let content = userInfo[BridgeNotification.notificationContentKey] as? String else {
                 return
             }
-            self.subject.send(BridgePayload(path: path, content: content))
+            self.subject.send(BridgeMessage(path: path, content: content))
         }
-    }
-    
-    deinit {
-        subscription = nil
     }
 }
 
 
 public extension Publisher {
     
-    func decode<T:Decodable>(path: String) -> AnyPublisher<T, Self.Failure> where Output == BridgePayload {
+    func decodeContent<T:Decodable>(path: String) -> AnyPublisher<T, Self.Failure> where Output == BridgeMessage {
         self
             .filter { $0.path == path}
+            .compactMap { try? JSONDecoder().decode(T.self, from: Data($0.content.utf8)) }
+            .eraseToAnyPublisher()
+    }
+    
+    func decodeContent<T:Decodable>() -> AnyPublisher<T, Self.Failure> where Output == BridgeMessage {
+        self
             .compactMap { try? JSONDecoder().decode(T.self, from: Data($0.content.utf8)) }
             .eraseToAnyPublisher()
     }

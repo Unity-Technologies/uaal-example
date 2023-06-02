@@ -32,11 +32,11 @@ class UnityBridgeMessenger : BridgeMessenger {
         self.method = method
     }
     
-    func sendPayload(path: String, content: String) throws {
+    func sendMessage(path: String, content: String) throws {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else {
             throw UnityBridgeMessengerError.notInitialized
         }
-        let payload = BridgePayload(path: path, content: content)
+        let payload = BridgeMessage(path: path, content: content)
         let message = String(decoding: try encoder.encode(payload), as: UTF8.self)
         appDelegate.sendMessageToGO(withName: gameObject, functionName: method, message: message)
     }
