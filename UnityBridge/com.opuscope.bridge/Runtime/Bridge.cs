@@ -16,7 +16,7 @@ namespace Opuscope.Bridge
         public string Content { get; set; }
     }
     
-    public class WorkflowResult
+    public class WorkflowCompletion
     {
         public static string Path => "/workflow/completed";
     
@@ -26,7 +26,7 @@ namespace Opuscope.Bridge
         [JsonProperty("result")]
         public string Result { get; set; }
 
-        public static WorkflowResult Make(string identifier, string result) => new ()
+        public static WorkflowCompletion Make(string identifier, string result) => new ()
         {
             Identifier = identifier,
             Result = result
@@ -49,6 +49,11 @@ namespace Opuscope.Bridge
         public static WorkflowFailure Make(string identifier, Exception e)
         {
             return new WorkflowFailure();
+        }
+
+        public Exception ToException()
+        {
+            return new Exception();
         }
     }
 
@@ -86,9 +91,11 @@ namespace Opuscope.Bridge
         UniTask<string> Perform(string payload, CancellationToken cancellationToken);
     }
 
-    public interface IBridge : IBridgeMessenger
+    public interface IBridge
     {
         IObservable<BridgeMessage> Publish(string path);
+
+        void Send<T>(string path, T content);
         
         JsonSerializerSettings JsonSerializerSettings { get; }
     }
@@ -105,7 +112,7 @@ namespace Opuscope.Bridge
     {
         private readonly IBridgeMessenger _messenger;
         private IDisposable _notificationSubscription;
-        private Dictionary<string, Subject<BridgeMessage>> _subjects = new ();
+        private readonly Dictionary<string, Subject<BridgeMessage>> _subjects = new ();
         
         public JsonSerializerSettings JsonSerializerSettings { get; }
 
@@ -133,9 +140,10 @@ namespace Opuscope.Bridge
             _notificationSubscription = null;
         }
 
-        public void SendMessage(string path, string content)
+        public void Send<T>(string path, T content)
         {
-            _messenger.SendMessage(path, content);
+            string serialized = JsonConvert.SerializeObject(content, JsonSerializerSettings);
+            _messenger.SendMessage(path, serialized);
         }
 
         public IObservable<BridgeMessage> Publish(string path)
@@ -152,59 +160,57 @@ namespace Opuscope.Bridge
     
     public class BridgeWorkflowController : IDisposable
     {
-        private readonly Dictionary<string, IWorkflowImplementation> incomingWorkflowImplementations = new();
-        private readonly Dictionary<string, CancellationTokenSource> incomingCancellationSources = new();
+        private readonly Dictionary<string, IWorkflowImplementation> _workflowImplementations = new();
+        private readonly Dictionary<string, CancellationTokenSource> _cancellationSources = new();
+        
+        private readonly Dictionary<string, UniTaskCompletionSource<WorkflowCompletion>> _completionSources = new();
 
-        private IBridge _bridge;
+        private readonly IBridge _bridge;
         private CompositeDisposable _subscriptions = new();
         
         public BridgeWorkflowController(IBridge bridge)
         {
             _bridge = bridge;
-
             void RunSync(ISyncWorkflowImplementation implementation, WorkflowRequest request)
             {
                 try
                 {
                     string content = implementation.Perform(request.Payload);
-                    WorkflowResult result = WorkflowResult.Make(request.Identifier, content);
-                    _bridge.SendMessage(WorkflowResult.Path, JsonConvert.SerializeObject(result, _bridge.JsonSerializerSettings));
+                    WorkflowCompletion completion = WorkflowCompletion.Make(request.Identifier, content);
+                    _bridge.Send(WorkflowCompletion.Path, completion);
                 }
                 catch (Exception e)
                 {
                     WorkflowFailure failure = WorkflowFailure.Make(request.Identifier, e);
-                    _bridge.SendMessage(WorkflowFailure.Path, JsonConvert.SerializeObject(failure, _bridge.JsonSerializerSettings));
+                    _bridge.Send(WorkflowFailure.Path, failure);
                 }
             }
-            
             async UniTask RunAsync(IAsyncWorkflowImplementation implementation, WorkflowRequest request)
             {
                 CancellationTokenSource source = new CancellationTokenSource();
-                incomingCancellationSources[request.Identifier] = source;
+                _cancellationSources[request.Identifier] = source;
                 try
                 {
                     string content = await implementation.Perform(request.Payload, source.Token);
-                    WorkflowResult result = WorkflowResult.Make(request.Identifier, content);
-                    _bridge.SendMessage(WorkflowResult.Path, JsonConvert.SerializeObject(result, _bridge.JsonSerializerSettings));
+                    WorkflowCompletion completion = WorkflowCompletion.Make(request.Identifier, content);
+                    _bridge.Send(WorkflowCompletion.Path, completion);
                 }
                 catch (Exception e)
                 {
                     WorkflowFailure failure = WorkflowFailure.Make(request.Identifier, e);
-                    _bridge.SendMessage(WorkflowFailure.Path, JsonConvert.SerializeObject(failure, _bridge.JsonSerializerSettings));
+                    _bridge.Send(WorkflowFailure.Path, failure);
                 }
                 finally
                 {
-                    incomingCancellationSources.Remove(request.Identifier);
+                    _cancellationSources.Remove(request.Identifier);
                 }
             }
-            
             _bridge.PublishContent<WorkflowRequest>(WorkflowRequest.Path).Subscribe(request =>
             {
-                if (!incomingWorkflowImplementations.TryGetValue(request.Procedure, out IWorkflowImplementation implementation))
+                if (!_workflowImplementations.TryGetValue(request.Procedure, out IWorkflowImplementation implementation))
                 {
                     return;
                 }
-
                 switch (implementation)
                 {
                     case ISyncWorkflowImplementation syncWorkflowImplementation:
@@ -215,33 +221,106 @@ namespace Opuscope.Bridge
                         break;
                 }
             });
-
             _bridge.PublishContent<WorkflowCancellation>(WorkflowCancellation.Path).Subscribe(cancellation =>
             {
-                if (incomingCancellationSources.TryGetValue(cancellation.Identifier, out CancellationTokenSource source))
+                if (_cancellationSources.TryGetValue(cancellation.Identifier, out CancellationTokenSource source))
                 {
                     source.Cancel();
-                    incomingCancellationSources.Remove(cancellation.Identifier);
+                    _cancellationSources.Remove(cancellation.Identifier);
+                }
+            });
+            _bridge.PublishContent<WorkflowCompletion>(WorkflowCompletion.Path).Subscribe(completion =>
+            {
+                if (_completionSources.TryGetValue(completion.Identifier, out UniTaskCompletionSource<WorkflowCompletion> source))
+                {
+                    source.TrySetResult(completion);
+                    _completionSources.Remove(completion.Identifier);
+                }
+            });
+            _bridge.PublishContent<WorkflowFailure>(WorkflowFailure.Path).Subscribe(failure =>
+            {
+                if (_completionSources.TryGetValue(failure.Identifier, out UniTaskCompletionSource<WorkflowCompletion> source))
+                {
+                    source.TrySetException(failure.ToException());
+                    _completionSources.Remove(failure.Identifier);
                 }
             });
         }
 
-        public async UniTask<TResult> PerformWorkflow<TPayload, TResult>(string procedure, TPayload payload)
+        public UniTask<TResult> PerformWorkflow<TPayload, TResult>(string procedure, TPayload payload)
         {
-            // Implementation of the method...
-            throw new NotImplementedException();
+            return PerformWorkflow<TPayload, TResult>(procedure, payload, CancellationToken.None);
+        }
+        
+        public async UniTask<TResult> PerformWorkflow<TPayload, TResult>(string procedure, TPayload payload, CancellationToken cancellationToken)
+        {
+            using CompositeDisposable subscriptions = new CompositeDisposable();
+
+            string identifier = Guid.NewGuid().ToString();
+            UniTaskCompletionSource<TResult> taskCompletionSource = new UniTaskCompletionSource<TResult>();
+            
+            // TODO : find a better way of observing cancellation token
+            subscriptions.Add(Observable.EveryUpdate().Where(_ => cancellationToken.IsCancellationRequested)
+                .First()
+                .Subscribe(_ => _bridge.Send(WorkflowCancellation.Path, new WorkflowCancellation { Identifier = identifier })));
+            
+            subscriptions.Add(_bridge.PublishContent<WorkflowCompletion>(WorkflowCompletion.Path)
+                .Where(completion => completion.Identifier == identifier)
+                .Subscribe(completion =>
+                {
+                    TResult result = JsonConvert.DeserializeObject<TResult>(completion.Result);
+                    if (result == null)
+                    {
+                        taskCompletionSource.TrySetException(new Exception("result serialization failure"));
+                    }
+                    else
+                    {
+                        taskCompletionSource.TrySetResult(result);
+                    }
+                }));
+            
+            string serialized = JsonConvert.SerializeObject(payload, _bridge.JsonSerializerSettings);
+            WorkflowRequest request = new WorkflowRequest
+            {
+                Identifier = identifier,
+                Procedure = procedure,
+                Payload = serialized
+            };
+            _bridge.Send(WorkflowRequest.Path, request);
+
+            // note : important to explicitly await so that the using subscriptions stay alive
+            TResult result = await taskCompletionSource.Task;
+            return result;
         }
 
-        public async UniTask<WorkflowResult> PerformWorkflow<TPayload>(string procedure, TPayload payload)
+        private void ThrowIfConflictingProcedure(string procedure)
         {
-            // Implementation of the method...
-            throw new NotImplementedException();
+            if (_workflowImplementations.ContainsKey(procedure))
+            {
+                throw new Exception("conflicting procedure : " + procedure);
+            }
         }
-
+        
+        public void Register<TPayload, TResult>(string procedure, Func<TPayload, CancellationToken, UniTask<TResult>> callback)
+        {
+            ThrowIfConflictingProcedure(procedure);
+            _workflowImplementations[procedure] = new AsyncWorkflowImplementation<TPayload, TResult>(
+                callback, _bridge.JsonSerializerSettings);
+        }
+        
         public void Register<TPayload, TResult>(string procedure, Func<TPayload, UniTask<TResult>> callback)
         {
-            // Implementation of the method...
-            throw new NotImplementedException();
+            ThrowIfConflictingProcedure(procedure);
+            _workflowImplementations[procedure] = new AsyncWorkflowImplementation<TPayload, TResult>(
+                (payload, _) => callback(payload), _bridge.JsonSerializerSettings);
+            
+        }
+        
+        public void Register<TPayload, TResult>(string procedure, Func<TPayload, TResult> callback)
+        {
+            ThrowIfConflictingProcedure(procedure);
+            _workflowImplementations[procedure] = new SyncWorkflowImplementation<TPayload, TResult>(
+                callback, _bridge.JsonSerializerSettings);
         }
 
         private class SyncWorkflowImplementation<TPayload, TResult> : ISyncWorkflowImplementation
