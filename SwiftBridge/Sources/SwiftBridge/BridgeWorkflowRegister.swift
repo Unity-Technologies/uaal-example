@@ -22,6 +22,21 @@ public enum BridgeWorkflowRegisterError : Error {
     case procedureConflict(String)
 }
 
+extension WorkflowFailure {
+    static func from(identifier: String, error : Error) -> WorkflowFailure {
+        switch error {
+        case is CancellationError:
+            return WorkflowFailure(identifier: identifier, type: WorkflowFailure.cancellationType, message: "")
+        case let WorkflowError.invalidProcedure(procedure):
+            return WorkflowFailure(identifier: identifier, type: WorkflowFailure.invalidType, message: procedure)
+        case let WorkflowError.runtime(type, message):
+            return WorkflowFailure(identifier: identifier, type: type, message: message)
+        default:
+            return WorkflowFailure(identifier: identifier, type: "", message: "")
+        }
+    }
+}
+
 public class BridgeWorkflowRegister {
     
     private let bridge : Bridge
@@ -80,49 +95,13 @@ public class BridgeWorkflowRegister {
             }.store(in: &subscriptions)
     }
     
-    //MARK: Outgoing
-    
-    public func performWorkflow<TPayload, TResult>(procedure: String, payload: TPayload) async throws -> TResult
-    where TPayload : Encodable, TResult : Decodable {
-        throw CancellationError()
-    }
-    
-    private func performWorkflow<TPayload>(procedure: String, payload: TPayload) async throws -> WorkflowCompletion
-    where TPayload : Encodable {
-        let identifier = UUID().uuidString
-        var cancellables = Set<AnyCancellable>()
-        return try await withTaskCancellationHandler(operation: {
-            return try await withCheckedThrowingContinuation { (continuation : CheckedContinuation<WorkflowCompletion, Error>) in
-                bridge.publishContent(path: WorkflowCompletion.path)
-                    .first { (result : WorkflowCompletion) in result.identifier == identifier }
-                    .sink { continuation.resume(returning: $0) }
-                    .store(in: &cancellables)
-                bridge.publishContent(path: WorkflowFailure.path)
-                    .first { (failure : WorkflowFailure) in failure.identifier == identifier }
-                    .sink { continuation.resume(throwing: $0.toError()) }
-                    .store(in: &cancellables)
-                do {
-                    let payload = String(decoding: try encoder.encode(payload), as: UTF8.self)
-                    let request = WorkflowRequest(identifier: identifier, procedure: procedure, payload: payload)
-                    try bridge.sendMessage(path: WorkflowRequest.path, data: try encoder.encode(request))
-                } catch {
-                    continuation.resume(throwing: error)
-                }
-            }
-        }, onCancel: {
-            if let data = try? self.encoder.encode(WorkflowCancellation(identifier: identifier)) {
-                try? bridge.sendMessage(path: WorkflowCancellation.path, data:data)
-            }
-        })
-    }
-    
     //MARK: Incoming
     
     public func register<TPayload: Decodable, TResult: Encodable> (
         procedure: String,
         callback : @escaping (TPayload) async throws -> TResult) throws {
             guard incomingWorkflowImplementations[procedure] == nil else {
-                throw BridgeWorkflowControllerError.procedureConflict(procedure)
+                throw BridgeWorkflowRegisterError.procedureConflict(procedure)
             }
             incomingWorkflowImplementations[procedure] = AsyncCallbackContainer(callback: callback, controller: self)
     }
@@ -131,7 +110,7 @@ public class BridgeWorkflowRegister {
         procedure: String,
         callback : @escaping (TPayload) throws -> TResult) throws {
             guard incomingWorkflowImplementations[procedure] == nil else {
-                throw BridgeWorkflowControllerError.procedureConflict(procedure)
+                throw BridgeWorkflowRegisterError.procedureConflict(procedure)
             }
             incomingWorkflowImplementations[procedure] = SyncCallbackContainer(callback: callback, controller: self)
     }
@@ -149,9 +128,9 @@ public class BridgeWorkflowRegister {
     private class AsyncCallbackContainer<TPayload: Decodable, TResult: Encodable> : AsyncWorkflowImplementation {
         
         private let callback : (TPayload) async throws -> TResult
-        private let controller : BridgeWorkflowController
+        private let controller : BridgeWorkflowRegister
                 
-        init(callback: @escaping (TPayload) async throws -> TResult, controller: BridgeWorkflowController) {
+        init(callback: @escaping (TPayload) async throws -> TResult, controller: BridgeWorkflowRegister) {
             self.callback = callback
             self.controller = controller
         }
@@ -167,9 +146,9 @@ public class BridgeWorkflowRegister {
     private class SyncCallbackContainer<TPayload: Decodable, TResult: Encodable> : SyncWorkflowImplementation {
         
         private let callback : (TPayload) throws -> TResult
-        private let controller : BridgeWorkflowController
+        private let controller : BridgeWorkflowRegister
                 
-        init(callback: @escaping (TPayload) throws -> TResult, controller: BridgeWorkflowController) {
+        init(callback: @escaping (TPayload) throws -> TResult, controller: BridgeWorkflowRegister) {
             self.callback = callback
             self.controller = controller
         }
