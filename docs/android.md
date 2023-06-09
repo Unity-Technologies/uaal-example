@@ -3,8 +3,10 @@ This document explains how to include Unity as a Library into standard Android a
 
 **Requirements:**
 - Android Studio Bumblebee (2021.1.1) or later
-- Unity version 2022.2.0a18 or later
-[Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [this branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS)
+- Unity version 2023.1.0a20 or later
+
+[Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [19LTS-21LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS). For Unity versions from 2022.2.0a17 to 2023.1.0a16 use [22LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/22LTS).
+
 
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
@@ -17,8 +19,10 @@ This document explains how to include Unity as a Library into standard Android a
 - Go to Build Settings window (Menu / File / Build Settings)
   - Select and switch to Android Platform
 - Go to Player Settings window (click Player Settings button at the bottom left corner of Build Settings or use Edit / Project Settings menu and choose Player tab on the left)
-  - In Other Settings -> Configuration section choose targeted architectures
+  - In Other Settings -> Configuration section -> choose targeted architectures
     <br><img src="images/android/selectArchitectures.png">
+  - In Other Settings -> Configuration section -> select Activity as Application Entry Point
+    <br><img src="images/android/ApplicationEntryPoint.png" width='600px'>
 - Go back to Build Settings window
   - Select option “Export Project” 
     <br><img src="images/android/exportProject.png" width='400px'>
