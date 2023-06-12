@@ -2,7 +2,6 @@ package com.unity.mynativeapp;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Process;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -27,10 +26,10 @@ public class MainUnityActivity extends OverrideUnityActivity {
     }
 
     void handleIntent(Intent intent) {
-        if(intent == null || intent.getExtras() == null) return;
+        if (intent == null || intent.getExtras() == null) return;
 
-        if(intent.getExtras().containsKey("doQuit"))
-            if(mUnityPlayer != null) {
+        if (intent.getExtras().containsKey("doQuit"))
+            if (mUnityPlayer != null) {
                 finish();
             }
     }
@@ -43,12 +42,13 @@ public class MainUnityActivity extends OverrideUnityActivity {
         startActivity(intent);
     }
 
-    @Override public void onUnityPlayerUnloaded() {
+    @Override
+    public void onUnityPlayerUnloaded() {
         showMainActivity("");
     }
 
     public void addControlsToUnityFrame() {
-        FrameLayout layout = mUnityPlayer;
+        FrameLayout layout = mUnityPlayer.getFrameLayout();
         {
             Button myButton = new Button(this);
             myButton.setText("Show Main");
@@ -57,7 +57,7 @@ public class MainUnityActivity extends OverrideUnityActivity {
 
             myButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
-                   showMainActivity("");
+                    showMainActivity("");
                 }
             });
             layout.addView(myButton, 300, 200);
@@ -68,7 +68,7 @@ public class MainUnityActivity extends OverrideUnityActivity {
             myButton.setText("Send Msg");
             myButton.setX(320);
             myButton.setY(500);
-            myButton.setOnClickListener( new View.OnClickListener() {
+            myButton.setOnClickListener(new View.OnClickListener() {
                 public void onClick(View v) {
                     mUnityPlayer.UnitySendMessage("Cube", "ChangeColor", "yellow");
                 }
