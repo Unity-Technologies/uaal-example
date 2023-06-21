@@ -1,18 +1,17 @@
 package com.company.product;
+
 import android.os.Bundle;
-import android.widget.FrameLayout;
 
-import com.unity3d.player.UnityPlayerActivity;
 
-public abstract class OverrideUnityActivity extends UnityPlayerActivity
-{
+import com.unity3d.player.UnityPlayerGameActivity;
+
+public abstract class OverrideUnityActivity extends UnityPlayerGameActivity {
     public static OverrideUnityActivity instance = null;
 
     abstract protected void showMainActivity(String setToColor);
 
     @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
+    protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         instance = this;
     }
@@ -22,4 +21,5 @@ public abstract class OverrideUnityActivity extends UnityPlayerActivity
         super.onDestroy();
         instance = null;
     }
+
 }
