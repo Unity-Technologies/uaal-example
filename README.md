@@ -10,8 +10,8 @@ Using Unity as a Library **requires you have experience with developing for nati
 
 **Requirements**
 
-Android: 2023.1.7f1 or higher
-iOS: 2021.3.28f1 or higher
+* **Android:** 2023.1.7f1 or higher
+* **iOS:** 2021.3.28f1 or higher
 
 **Limitations**
 
