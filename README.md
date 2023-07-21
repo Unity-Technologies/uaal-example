@@ -8,6 +8,10 @@ Starting with Unity 2019.3.0a2, Unity  introduced a new feature to use Unity as 
 
 Using Unity as a Library **requires you have experience with developing for native platform technologies** such as Java/Android, Objective C/iOS, or Windows Win32/UWP. You need to be familiar with the structure of the project, language features and specific platform configuration options (like user permissions for example).
 
+**Requirements**
+
+Android: 2023.1.7f1 or higher
+iOS: 2021.3.28f1 or higher
 
 **Limitations**
 
