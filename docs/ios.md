@@ -3,7 +3,7 @@ This document explains how to include Unity as a Library into standard iOS appli
 
 **Requirements:**
 - Xcode 9.4+
-- Unity version 2019.3.0b11+, 2020.1.0a13+
+- Unity version 2021.3.28f1 or higher
 
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
