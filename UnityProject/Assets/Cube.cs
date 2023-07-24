@@ -28,7 +28,7 @@ public class Cube : MonoBehaviour
     string lastStringColor = "";
     void ChangeColor(string newColor)
     {
-        appendToText( "Chancing Color to " + newColor );
+        appendToText( "Changing Color to " + newColor );
 
         lastStringColor = newColor;
     
@@ -44,9 +44,8 @@ public class Cube : MonoBehaviour
 #if UNITY_ANDROID
         try
         {
-            AndroidJavaClass jc = new AndroidJavaClass("com.company.product.OverrideUnityActivity");
-            AndroidJavaObject overrideActivity = jc.GetStatic<AndroidJavaObject>("instance");
-            overrideActivity.Call("showMainActivity", lastStringColor);
+            AndroidJavaClass jc = new AndroidJavaClass("com.unity.mynativeapp.SharedClass");
+            jc.CallStatic("showMainActivity", lastStringColor);
         } catch(Exception e)
         {
             appendToText("Exception during showHostMainWindow");
@@ -60,10 +59,10 @@ public class Cube : MonoBehaviour
     void OnGUI()
     {
         GUIStyle style = new GUIStyle("button");
-        style.fontSize = 30;        
+        style.fontSize = 45;
         if (GUI.Button(new Rect(10, 10, 200, 100), "Red", style)) ChangeColor("red");
         if (GUI.Button(new Rect(10, 110, 200, 100), "Blue", style)) ChangeColor("blue");
-        if (GUI.Button(new Rect(10, 300, 400, 100), "Show Main With Color", style)) showHostMainWindow();
+        if (GUI.Button(new Rect(10, 300, 600, 100), "Show Main With Color", style)) showHostMainWindow();
 
         if (GUI.Button(new Rect(10, 400, 400, 100), "Unload", style)) Application.Unload();
         if (GUI.Button(new Rect(440, 400, 400, 100), "Quit", style)) Application.Quit();

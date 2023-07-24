@@ -3,9 +3,9 @@ package com.unity.mynativeapp;
 import android.content.Intent;
 import android.os.Bundle;
 
-import com.unity3d.player.UnityPlayerActivity;
+import com.unity3d.player.UnityPlayerGameActivity;
 
-public class MainUnityActivity extends UnityPlayerActivity {
+public class MainUnityGameActivity extends UnityPlayerGameActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -17,7 +17,6 @@ public class MainUnityActivity extends UnityPlayerActivity {
         handleIntent(intent);
     }
 
-
     @Override
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
@@ -26,18 +25,20 @@ public class MainUnityActivity extends UnityPlayerActivity {
     }
 
     void handleIntent(Intent intent) {
-        if (intent == null || intent.getExtras() == null) return;
+        if (intent == null || intent.getExtras() == null)
+            return;
 
         if (intent.getExtras().containsKey("doQuit")) {
             if (mUnityPlayer != null) {
                 finish();
             }
         }
+
     }
 
     @Override
     public void onUnityPlayerUnloaded() {
         SharedClass.showMainActivity("");
     }
-
 }
+

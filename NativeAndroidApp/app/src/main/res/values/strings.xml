@@ -2,4 +2,7 @@
     <string name="app_name">NativeApp</string>
     <string name="action_settings">Settings</string>
     <string name="game_view_content_description">Game view</string>
+    <string name="show_unity">Show Unity</string>
+    <string name="show_unity_game">Show UnityGameActivity</string>
+    <string name="finish_unity">Finish Unity</string>
 </resources>
