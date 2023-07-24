@@ -89,7 +89,7 @@ Main Activity | Unity is loaded and is running in a separate Activity. Light gre
     <br><img src="images/android/selectGameActivity.png" width='600px'>
     <br><img src="images/android/deleteMainUnityActivity.png">
   
-- (Optional) We found some Android 7.* devices set frontOfTask to wrong state for activities as a result when finishing/quitting Unity activity whole task goes to background instead of bringing back Main activity. Next workaround keeps expected behavior: add to MainUnityActivity.java from NativeAndroidApp
+- (Optional) We found some Android 7.* devices set frontOfTask to wrong state for activities, as a result when finishing/quitting Unity activity whole task goes to background instead of bringing back Main activity. Next workaround keeps expected behavior: add the below code to MainUnityActivity.java or UnityPlayerGameActivity.java or both in NativeAndroidApp
   ```
-  @Override public void onUnityPlayerQuitted() { showMainActivity(""); finish(); }
+  @Override public void onUnityPlayerQuitted() { SharedClass.showMainActivity(""); finish(); }
   ```
