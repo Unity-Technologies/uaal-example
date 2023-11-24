@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void handleIntent(Intent intent) {
-        if (intent == null || intent.getExtras() == null) return;
+        if (intent == null || intent.getExtras() == null)
+            return;
 
         if (intent.getExtras().containsKey("setColor")) {
             View v = findViewById(R.id.finish_button);
@@ -193,14 +194,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void disableShowUnityButtons() {
-        if (mActivityType != ActivityType.BOTH) return;
+        if (mActivityType != ActivityType.BOTH)
+            return;
 
         mShowUnityButton.setEnabled(!isGameActivity);
         mShowUnityGameButton.setEnabled(isGameActivity);
     }
 
     private void enableShowUnityButtons() {
-        if (mActivityType != ActivityType.BOTH) return;
+        if (mActivityType != ActivityType.BOTH)
+            return;
 
         mShowUnityButton.setEnabled(true);
         mShowUnityGameButton.setEnabled(true);
