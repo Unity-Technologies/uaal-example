@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
@@ -14,24 +14,28 @@ public class NativeAPI {
 
 public class Cube : MonoBehaviour
 {
-    public Text text;    
-    void appendToText(string line) { text.text += line + "\n"; }
+    public Text text;
+    string lastStringColor = "";
+
+    void AppendToText(string line)
+    {
+        text.text += line + "\n";
+    }
 
     void Update()
     {
-        transform.Rotate(0, Time.deltaTime*10, 0);
-		
-		if (Application.platform == RuntimePlatform.Android)
+        transform.Rotate(0, Time.deltaTime * 10, 0);
+
+        if (Application.platform == RuntimePlatform.Android)
             if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
     }
 
-    string lastStringColor = "";
     void ChangeColor(string newColor)
     {
-        appendToText( "Changing Color to " + newColor );
+        AppendToText("Changing Color to " + newColor);
 
         lastStringColor = newColor;
-    
+
         if (newColor == "red") GetComponent<Renderer>().material.color = Color.red;
         else if (newColor == "blue") GetComponent<Renderer>().material.color = Color.blue;
         else if (newColor == "yellow") GetComponent<Renderer>().material.color = Color.yellow;
@@ -39,7 +43,7 @@ public class Cube : MonoBehaviour
     }
 
 
-    void showHostMainWindow()
+    void ShowHostMainWindow()
     {
 #if UNITY_ANDROID
         try
@@ -48,8 +52,8 @@ public class Cube : MonoBehaviour
             jc.CallStatic("showMainActivity", lastStringColor);
         } catch(Exception e)
         {
-            appendToText("Exception during showHostMainWindow");
-            appendToText(e.Message);
+            AppendToText("Exception during showHostMainWindow");
+            AppendToText(e.Message);
         }
 #elif UNITY_IOS || UNITY_TVOS
         NativeAPI.showHostMainWindow(lastStringColor);
@@ -62,10 +66,9 @@ public class Cube : MonoBehaviour
         style.fontSize = 45;
         if (GUI.Button(new Rect(10, 10, 200, 100), "Red", style)) ChangeColor("red");
         if (GUI.Button(new Rect(10, 110, 200, 100), "Blue", style)) ChangeColor("blue");
-        if (GUI.Button(new Rect(10, 300, 600, 100), "Show Main With Color", style)) showHostMainWindow();
+        if (GUI.Button(new Rect(10, 300, 600, 100), "Show Main With Color", style)) ShowHostMainWindow();
 
         if (GUI.Button(new Rect(10, 400, 400, 100), "Unload", style)) Application.Unload();
         if (GUI.Button(new Rect(440, 400, 400, 100), "Quit", style)) Application.Quit();
     }
 }
-

@@ -47,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     void handleIntent(Intent intent) {
-        if (intent == null || intent.getExtras() == null) return;
+        if (intent == null || intent.getExtras() == null)
+            return;
 
         if (intent.getExtras().containsKey("setColor")) {
             View v = findViewById(R.id.finish_button);
@@ -76,20 +77,24 @@ public class MainActivity extends AppCompatActivity {
         Intent intent;
         switch (v.getId()) {
             case R.id.show_unity_button:
-                intent = new Intent(this, getMainUnityActivityClass());
+                startUnityWithClass(getMainUnityActivityClass());
                 break;
 
             case R.id.show_unity_game_button:
-                intent = new Intent(this, getMainUnityGameActivityClass());
+                startUnityWithClass(getMainUnityGameActivityClass());
                 break;
 
             default:
                 return;
         }
+    }
+
+    private void startUnityWithClass(Class klass)
+    {
+        Intent intent = new Intent(this, klass);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivityForResult(intent, 1);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -196,14 +201,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void disableShowUnityButtons() {
-        if (mActivityType != ActivityType.BOTH) return;
+        if (mActivityType != ActivityType.BOTH)
+            return;
 
         mShowUnityButton.setEnabled(!isGameActivity);
         mShowUnityGameButton.setEnabled(isGameActivity);
     }
 
     private void enableShowUnityButtons() {
-        if (mActivityType != ActivityType.BOTH) return;
+        if (mActivityType != ActivityType.BOTH)
+            return;
 
         mShowUnityButton.setEnabled(true);
         mShowUnityGameButton.setEnabled(true);
