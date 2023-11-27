@@ -15,12 +15,13 @@ dependencies {
 
 
 android {
-    compileSdkVersion 33
+    namespace "com.unity.mynativeapp"
+    compileSdkVersion 34
 
     defaultConfig {
         applicationId "com.unity.mynativeapp"
         minSdkVersion 23
-        targetSdkVersion 33
+        targetSdkVersion 34
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a"
         }
