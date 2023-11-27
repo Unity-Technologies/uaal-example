@@ -73,23 +73,20 @@ public class MainActivity extends AppCompatActivity {
         isGameActivity = !(v.getId() == R.id.show_unity_button);
         disableShowUnityButtons();
 
-        Intent intent;
-        switch (v.getId()) {
-            case R.id.show_unity_button:
-                intent = new Intent(this, getMainUnityActivityClass());
-                break;
-
-            case R.id.show_unity_game_button:
-                intent = new Intent(this, getMainUnityGameActivityClass());
-                break;
-
-            default:
-                return;
+        int id = v.getId();
+        if (id == R.id.show_unity_button) {
+            startUnityWithClass(getMainUnityActivityClass());
+        } else if (id == R.id.show_unity_game_button) {
+            startUnityWithClass(getMainUnityGameActivityClass());
         }
+    }
+
+    private void startUnityWithClass(Class klass)
+    {
+        Intent intent = new Intent(this, klass);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivityForResult(intent, 1);
     }
-
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -122,9 +119,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void showToast(String message) {
-        CharSequence text = message;
         int duration = Toast.LENGTH_SHORT;
-        Toast toast = Toast.makeText(getApplicationContext(), text, duration);
+        Toast toast = Toast.makeText(getApplicationContext(), message, duration);
         toast.show();
     }
 
