@@ -2,7 +2,7 @@
 This document explains how to include Unity as a Library into standard Android application through Activity. You can read more about [Unity as a Library](https://docs.unity3d.com/2019.3/Documentation/Manual/UnityasaLibrary.html).
 
 **Requirements:**
-- Android Studio Bumblebee (2021.1.1) or later
+- Android Studio Hedgehog (2023.1.1) or later
 - Unity version 2023.1.7f1, 2023.2.0b3 or later
 
 [Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [19LTS-21LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS). For Unity versions from 2022.2.0a17 to 2023.1.0a16 use [22LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/22LTS).
