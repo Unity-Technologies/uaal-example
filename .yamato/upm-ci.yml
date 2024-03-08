@@ -53,8 +53,6 @@ test_{{ platform.name }}_{{ editor.version }}_{{ module_support.name }}:
     {{ platform.name }}_{{ editor.version }}_{{ module_support.name }}_logs:
       paths:
         - "upm-ci~/test-results/**/*"
-  dependencies:
-    - .yamato/upm-ci.yml#pack
 {% endfor %}
 {% endfor %}
 {% endfor %}
