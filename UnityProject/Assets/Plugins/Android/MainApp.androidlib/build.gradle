@@ -1,5 +1,7 @@
 apply plugin: 'com.android.application'
 
+evaluationDependsOn(':unityLibrary')
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.0.0'
@@ -12,17 +14,19 @@ dependencies {
     implementation 'androidx.games:games-activity:2.0.0'
     implementation 'androidx.core:core:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
 }
 
 
 android {
     namespace "com.unity.mynativeapp"
-    compileSdkVersion 33
+    def unityLib = project(':unityLibrary').extensions.getByName('android')
+    compileSdk  unityLib.compileSdk
+    buildToolsVersion = unityLib.buildToolsVersion
 
     defaultConfig {
         applicationId "com.unity.mynativeapp"
-        minSdkVersion 23
-        targetSdkVersion 33
+        minSdkVersion 24
         ndk {
             abiFilters "armeabi-v7a", "arm64-v8a"
         }
