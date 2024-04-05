@@ -13,8 +13,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.DefaultCompany.UaaLExample.R;
-
 public class MainActivity extends AppCompatActivity {
     private enum ActivityType {
         PLAYER_ACTIVITY, PLAYER_GAME_ACTIVITY, BOTH

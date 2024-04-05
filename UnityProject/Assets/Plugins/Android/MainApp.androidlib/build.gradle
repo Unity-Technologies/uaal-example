@@ -14,12 +14,12 @@ dependencies {
 }
 
 android {
-    namespace getProperty("unity.namespace")
+    namespace "com.unity.mynativeapp"
     compileSdk getProperty("unity.compileSdkVersion") as int
     buildToolsVersion = getProperty("unity.buildToolsVersion")
 
     defaultConfig {
-        applicationId getProperty("unity.applicationId")
+        applicationId "com.unity.mynativeapp"
         minSdkVersion getProperty("unity.minSdkVersion")
         ndk {
             abiFilters getProperty("unity.abiFilters")
