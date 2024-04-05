@@ -148,14 +148,6 @@ public class MainActivity extends AppCompatActivity {
         return false;
     }
 
-    private boolean existUnityPlayerActivity() {
-        return checkActivityExist("com.unity3d.player.UnityPlayerActivity");
-    }
-
-    private boolean existUnityPlayerGameActivity() {
-        return checkActivityExist("com.unity3d.player.UnityPlayerGameActivity");
-    }
-
     private Class findClassUsingReflection(String className) {
         try {
             return Class.forName(className);
@@ -177,12 +169,12 @@ public class MainActivity extends AppCompatActivity {
         mShowUnityButton = findViewById(R.id.show_unity_button);
         mShowUnityGameButton = findViewById(R.id.show_unity_game_button);
 
-        if (existUnityPlayerActivity()) {
+        if (getMainUnityActivityClass() != null) {
             mShowUnityButton.setVisibility(View.VISIBLE);
             mActivityType = ActivityType.PLAYER_ACTIVITY;
         }
 
-        if (existUnityPlayerGameActivity()) {
+        if (getMainUnityGameActivityClass() != null) {
             mShowUnityGameButton.setVisibility(View.VISIBLE);
             mActivityType = ActivityType.PLAYER_GAME_ACTIVITY;
         }
