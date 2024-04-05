@@ -25,7 +25,8 @@ android {
 
     defaultConfig {
         applicationId "com.unity.mynativeapp"
-        minSdkVersion getProperty("unity.minSdkVersion")
+        minSdk getProperty("unity.minSdkVersion") as int
+        targetSdk getProperty("unity.targetSdkVersion") as int
         ndk {
             abiFilters.addAll(getProperty("unity.abiFilters").tokenize(' '))
             debugSymbolLevel getProperty("unity.debugSymbolLevel")
