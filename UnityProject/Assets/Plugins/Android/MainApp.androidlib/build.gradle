@@ -18,11 +18,17 @@ android {
     compileSdk getProperty("unity.compileSdkVersion") as int
     buildToolsVersion = getProperty("unity.buildToolsVersion")
 
+    compileOptions {
+        sourceCompatibility JavaVersion.valueOf(getProperty("unity.javaCompatabilityVersion"))
+        targetCompatibility JavaVersion.valueOf(getProperty("unity.javaCompatabilityVersion"))
+    }
+
     defaultConfig {
         applicationId "com.unity.mynativeapp"
         minSdkVersion getProperty("unity.minSdkVersion")
         ndk {
-            abiFilters getProperty("unity.abiFilters")
+            abiFilters.addAll(getProperty("unity.abiFilters").tokenize(' '))
+            debugSymbolLevel getProperty("unity.debugSymboLevel")
         }
         versionCode getProperty("unity.versionCode") as int
         versionName getProperty("unity.versionName")
@@ -35,7 +41,3 @@ android {
         }
     }
 }
-
-
-
-
