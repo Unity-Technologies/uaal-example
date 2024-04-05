@@ -28,7 +28,7 @@ android {
         minSdkVersion getProperty("unity.minSdkVersion")
         ndk {
             abiFilters.addAll(getProperty("unity.abiFilters").tokenize(' '))
-            debugSymbolLevel getProperty("unity.debugSymboLevel")
+            debugSymbolLevel getProperty("unity.debugSymbolLevel")
         }
         versionCode getProperty("unity.versionCode") as int
         versionName getProperty("unity.versionName")
