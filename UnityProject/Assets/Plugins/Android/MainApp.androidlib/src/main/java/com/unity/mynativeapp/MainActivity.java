@@ -82,8 +82,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private void startUnityWithClass(Class klass)
-    {
+    private void startUnityWithClass(Class klass) {
         Intent intent = new Intent(this, klass);
         intent.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         startActivityForResult(intent, 1);
@@ -131,32 +130,6 @@ public class MainActivity extends AppCompatActivity {
         finishAffinity();
     }
 
-    private boolean checkActivityExist(String activityName) {
-        ActivityInfo[] aInfo = new ActivityInfo[0];
-        try {
-            aInfo = getPackageManager().getPackageInfo(getPackageName(), PackageManager.GET_ACTIVITIES).activities;
-            if (aInfo == null) {
-                return false;
-            }
-
-            for (ActivityInfo info : aInfo) {
-                if (activityName.equals(info.name)) return true;
-            }
-
-        } catch (PackageManager.NameNotFoundException e) {
-            e.printStackTrace();
-        }
-        return false;
-    }
-
-    private boolean existUnityPlayerActivity() {
-        return checkActivityExist("com.unity3d.player.UnityPlayerActivity");
-    }
-
-    private boolean existUnityPlayerGameActivity() {
-        return checkActivityExist("com.unity3d.player.UnityPlayerGameActivity");
-    }
-
     private Class findClassUsingReflection(String className) {
         try {
             return Class.forName(className);
@@ -178,12 +151,12 @@ public class MainActivity extends AppCompatActivity {
         mShowUnityButton = findViewById(R.id.show_unity_button);
         mShowUnityGameButton = findViewById(R.id.show_unity_game_button);
 
-        if (existUnityPlayerActivity()) {
+        if (getMainUnityActivityClass() != null) {
             mShowUnityButton.setVisibility(View.VISIBLE);
             mActivityType = ActivityType.PLAYER_ACTIVITY;
         }
 
-        if (existUnityPlayerGameActivity()) {
+        if (getMainUnityGameActivityClass() != null) {
             mShowUnityGameButton.setVisibility(View.VISIBLE);
             mActivityType = ActivityType.PLAYER_GAME_ACTIVITY;
         }

@@ -2,10 +2,10 @@
 This document explains how to include Unity as a Library into standard Android application through Activity. You can read more about [Unity as a Library](https://docs.unity3d.com/6000.0/Documentation/Manual/UnityasaLibrary.html).
 
 **Requirements:**
-- Android Studio Hedgehog (2023.1.1) or later
-- Unity version 2023.1.7f1, 2023.2.0b3 or later
+- Android Studio Iguana (2023.2.1) or later
+- Unity version 6000.0.0b16 or later
 
-[Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [19LTS-21LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS). For Unity versions from 2022.2.0a17 to 2023.1.0a16 use [22LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/22LTS). For Unity versions from 2023.1.7f1 to 2023.2.0b3 use [23LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/23LTS).
+[Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [19LTS-21LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS). For Unity versions from 2022.2.0a17 to 2023.1.0a16 use [22LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/22LTS). For Unity versions from 2023.1.7f1 to 6000.0.0b16 use [23LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/23LTS).
 
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
@@ -14,30 +14,32 @@ This document explains how to include Unity as a Library into standard Android a
   - MainApp.androidlib - Inside Unityproject, you can find MainApp.androidlib, which is [Android Library Project](https://docs.unity3d.com/6000.0/Documentation/Manual/android-library-project-import.html) and has a simple UI, MainUnityActivity and MainUnityGameActivity.
 
 **2. Generate Gradle project for Android platform**
-- Open UnityProject in Unity Editor
-- Go to Build Settings window (Menu / File / Build Settings)
-  - Select and switch to Android Platform
-- Go to Player Settings window (click Player Settings button at the bottom left corner of Build Settings or use Edit / Project Settings menu and choose Player tab on the left)
+- Open UnityProject in Unity Editor.
+- Go to Build Profiles window. (Menu / File / Build Profiles)
+  - Select and switch to Android Platform.
+- Go to Player Settings window. (Click Player Settings button at the top of Build Profiles or use Edit / Project Settings menu and choose Player tab on the left.)
   - In Other Settings -> Configuration section -> choose targeted architectures
     <br><img src="images/android/selectArchitectures.png">
   - In Other Settings -> Configuration section -> select both Activity and GameActivity as Application Entry Point
     <br><img src="images/android/ApplicationEntryPoint.png" width='600px'>
-- Go to Project tab and select MainApp under Assets
+- Go to Project tab and select MainApp under Assets / Plugins / Android.
   - In Inspector tab -> Select platforms for plugin -> select Android
   - In Inspector tab -> Platform settings -> Select dependent module -> choose None
     <br><img src="images/android/androidlibImportSettings.png" width='700px'>
-- Go back to Build Settings window
+- Go back to Build Profiles window.
   - Select option “Export Project” 
-    <br><img src="images/android/exportProject.png" width='400px'>
-  - Export UnityProject to a folder, the folder structure should look like this
-    <br><img src="images/android/exportedProjectFolder.png" width='400px'>
+    <br><img src="images/android/exportProject.png" width='670px'>
+  - Export UnityProject to a folder, the folder structure should look like this. (If you see Multiple application entries pop-up, click Yes.)
+    <br><img src="images/android/exportedProjectFolder.png" width='300px'>
 
 **3. Prepare to build in Android Studio**
-- Open the exported project in Android Studio. The launcher folder will not be visible if you select Android from the Project menu (UnityProject/Assets/Editor/AndroidGradleProjectModifier.cs removes launcher/build.gradle)
+- Open the exported project in Android Studio. The launcher folder will not be visible if you select Android from the Project menu. (UnityProject/Assets/Editor/AndroidGradleProjectModifier.cs removes launcher/build.gradle)
     <br><img src="images/android/exportedProjectInAndroidStudio.png">
-- Open build.gradle(Module: MainApp.androidlib) file
-  - In the file take a look at android{defaultConfig{ndk{ block and make sure abiFilters match the architectures you selected in Unity editor before exporting the project. The filter must match architectures in Unity editor exactly. If Unity exports only ARMv7 architecture, but the filter includes arm64-v8a, the application will crash on ARM64 devices. Check for valid abiFilters values in the [official Android documentation](https://developer.android.com/ndk/guides/abis#sa).
+- Open build.gradle(Module: MainApp.androidlib) and gradle.properties(Project Properties) files.
+  - In the build.gradle file, take a look at android{defaultConfig{ndk{ block, and check if it includes unity.abiFilters property from gradle.properties file. 
   <br><img src="images/android/buildGradleAppAbiFilters.png">
+  - Then, make sure unity.abiFilters in the gradle.properties file matches the architectures you selected in Unity editor before exporting the project. The filter must match architectures in Unity editor exactly. If Unity exports only ARMv7 architecture, but the filter includes arm64-v8a, the application will crash on ARM64 devices. Check for valid abiFilters values in the [official Android documentation](https://developer.android.com/ndk/guides/abis#sa).
+  <br><img src="images/android/gradlePropertiesAbiFilters.png">
 - Click Sync Now to do a project sync since Gradle files have been modified
   <img src="images/android/syncGradle.png">
 

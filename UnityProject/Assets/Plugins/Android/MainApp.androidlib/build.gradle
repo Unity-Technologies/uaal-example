@@ -6,27 +6,33 @@ dependencies {
     implementation 'androidx.constraintlayout:constraintlayout:1.1.3'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'androidx.appcompat:appcompat:1.6.1'
-    implementation 'androidx.games:games-activity:2.0.0'
+    implementation 'androidx.games:games-activity:3.0.0'
     implementation 'androidx.core:core:1.9.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
-    implementation project(':unityLibrary')
     implementation fileTree(dir: project(':unityLibrary').getProjectDir().toString() + ('\\libs'), include: ['*.jar'])
+    implementation project(':unityLibrary')
 }
-
 
 android {
     namespace "com.unity.mynativeapp"
-    compileSdkVersion 33
+    compileSdk getProperty("unity.compileSdkVersion") as int
+    buildToolsVersion = getProperty("unity.buildToolsVersion")
+
+    compileOptions {
+        sourceCompatibility JavaVersion.valueOf(getProperty("unity.javaCompatabilityVersion"))
+        targetCompatibility JavaVersion.valueOf(getProperty("unity.javaCompatabilityVersion"))
+    }
 
     defaultConfig {
         applicationId "com.unity.mynativeapp"
-        minSdkVersion 23
-        targetSdkVersion 33
+        minSdk getProperty("unity.minSdkVersion") as int
+        targetSdk getProperty("unity.targetSdkVersion") as int
         ndk {
-            abiFilters "armeabi-v7a", "arm64-v8a"
+            abiFilters.addAll(getProperty("unity.abiFilters").tokenize(','))
+            debugSymbolLevel getProperty("unity.debugSymbolLevel")
         }
-        versionCode 1
-        versionName "1.0"
+        versionCode getProperty("unity.versionCode") as int
+        versionName getProperty("unity.versionName")
     }
 
     buildTypes {
@@ -36,4 +42,3 @@ android {
         }
     }
 }
-

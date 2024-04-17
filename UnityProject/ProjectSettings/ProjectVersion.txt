@@ -1,2 +1,2 @@
-m_EditorVersion: 2023.3.0a10
-m_EditorVersionWithRevision: 2023.3.0a10 (c9b099e3345e)
+m_EditorVersion: 6000.0.0b16
+m_EditorVersionWithRevision: 6000.0.0b16 (1ddb887463a9)
