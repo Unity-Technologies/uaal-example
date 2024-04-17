@@ -5,7 +5,7 @@ This document explains how to include Unity as a Library into standard Android a
 - Android Studio Iguana (2023.2.1) or later
 - Unity version 6000.0.0b16 or later
 
-[Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [19LTS-21LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS). For Unity versions from 2022.2.0a17 to 2023.1.0a16 use [22LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/22LTS). For Unity versions from 2023.1.7f1 to 6000.0.0b16 use [23LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/23LTS).
+[Note] For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [19LTS-21LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS). For Unity versions from 2022.2.0a18 to 2023.1.0a16 use [22LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/22LTS). For Unity versions from 2023.1.7f1 to 6000.0.0b12 use [23LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/23LTS).
 
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
@@ -30,7 +30,7 @@ This document explains how to include Unity as a Library into standard Android a
   - Select option “Export Project” 
     <br><img src="images/android/exportProject.png" width='670px'>
   - Export UnityProject to a folder, the folder structure should look like this. (If you see Multiple application entries pop-up, click Yes.)
-    <br><img src="images/android/exportedProjectFolder.png" width='300px'>
+    <br><img src="images/android/exportedProjectFolder.png" width='250px'>
 
 **3. Prepare to build in Android Studio**
 - Open the exported project in Android Studio. The launcher folder will not be visible if you select Android from the Project menu. (UnityProject/Assets/Editor/AndroidGradleProjectModifier.cs removes launcher/build.gradle)
@@ -38,8 +38,10 @@ This document explains how to include Unity as a Library into standard Android a
 - Open build.gradle(Module: MainApp.androidlib) and gradle.properties(Project Properties) files.
   - In the build.gradle file, take a look at android{defaultConfig{ndk{ block, and check if it includes unity.abiFilters property from gradle.properties file. 
   <br><img src="images/android/buildGradleAppAbiFilters.png">
+
   - Then, make sure unity.abiFilters in the gradle.properties file matches the architectures you selected in Unity editor before exporting the project. The filter must match architectures in Unity editor exactly. If Unity exports only ARMv7 architecture, but the filter includes arm64-v8a, the application will crash on ARM64 devices. Check for valid abiFilters values in the [official Android documentation](https://developer.android.com/ndk/guides/abis#sa).
   <br><img src="images/android/gradlePropertiesAbiFilters.png">
+
 - Click Sync Now to do a project sync since Gradle files have been modified
   <img src="images/android/syncGradle.png">
 
