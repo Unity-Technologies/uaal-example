@@ -5,10 +5,10 @@ This document explains how to include Unity as a Library into standard Android a
 - Android Studio Iguana (2023.2.1) or later
 - Unity version 6000.0.0b16 or later
 
-  **Note**
-  - For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [19LTS-21LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS). 
-  - For Unity versions from 2022.2.0a18 to 2023.1.0a16 use [22LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/22LTS). 
-  - For Unity versions from 2023.1.7f1 to 6000.0.0b12 use [23LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/23LTS).
+**Note**
+- For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [19LTS-21LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS). 
+- For Unity versions from 2022.2.0a18 to 2023.1.0a16 use [22LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/22LTS). 
+- For Unity versions from 2023.1.7f1 to 6000.0.0b12 use [23LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/23LTS).
 
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
@@ -38,7 +38,7 @@ This document explains how to include Unity as a Library into standard Android a
 
 ## Project is ready
 Everything is ready to build, run and debug:
-<br><img src="images/android/buildOnDevice.png" width='500px'>
+<br><img src="images/android/buildOnDevice.png" width='450px'>
 <br>If everything succeeded, at this point you should be able to run NativeAndroidApp:
 
 Main Activity | Unity Activity or GameActivity
