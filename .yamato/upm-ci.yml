@@ -1,6 +1,5 @@
 test_editors:
-  - version: 2021.3
-  - version: trunk
+  - version: 6000.0
 test_platforms:
   - name: win
     type: Unity::VM
@@ -48,7 +47,7 @@ test_{{ platform.name }}_{{ editor.version }}_{{ module_support.name }}:
     - unity-downloader-cli -u {{ editor.version }} -c editor {{ module_support.install_command }} --wait
     - {{ platform.utr_download }} 
     - {{ platform.utr_chmod }} 
-    - {{ platform.utr_cmd }}  --suite=editor --editor-location=.Editor --testproject="TestProjects/BasicIntegration" --artifacts_path=upm-ci~/test-results/editor-android/
+    - {{ platform.utr_cmd }}  --suite=editor --editor-location=.Editor --testproject="UnityProject" --artifacts_path=upm-ci~/test-results/editor-android/
   artifacts:
     {{ platform.name }}_{{ editor.version }}_{{ module_support.name }}_logs:
       paths:
