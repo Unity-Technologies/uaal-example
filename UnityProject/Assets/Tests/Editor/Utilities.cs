@@ -159,7 +159,7 @@ namespace UAAL.EditorTests
 
 
             Console.WriteLine($"Exit Code: {result.ExitCode}\nStandard Output:\n{result.StdOut}\nStandard Error:\n{result.StdError}");
-            Assert.AreEqual(0, result.ExitCode, "Gradle Build failed");
+            Assert.AreEqual(0, result.ExitCode, $"Gradle Build failed:\n{result.StdError}");
 
             return result;
         }
