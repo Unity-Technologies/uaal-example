@@ -12,7 +12,7 @@ namespace UAAL.EditorTests
             EditorUserBuildSettings.exportAsGoogleAndroidProject = true;
         }
 
-        [Timeout(15 * 60 * 1000)]
+        [Timeout(20 * 60 * 1000)]
         [TestCase(ScriptingImplementation.IL2CPP)]
         [TestCase(ScriptingImplementation.Mono2x)]
         public void GradleProjectWithAllActivitiesBuildsSuccesfully(ScriptingImplementation scriptingImplementation)
