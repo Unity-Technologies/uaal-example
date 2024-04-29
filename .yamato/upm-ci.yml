@@ -1,0 +1,89 @@
+test_editors:
+  - version: 6000.0
+test_platforms:
+  - name: win
+    type: Unity::VM
+    image: package-ci/win10:stable
+    flavor: b1.large
+    move_alias: move
+    utr_download: curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr.bat --output utr.bat
+    utr_chmod: echo nothing to see
+    utr_cmd: utr.bat
+  - name: mac
+    type: Unity::VM::osx
+    image: package-ci/macos-13:v4
+    flavor: m1.mac
+    move_alias: mv
+    utr_download: curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr --output utr
+    utr_chmod: chmod +x ./utr
+    utr_cmd: ./utr
+  - name: linux
+    type: Unity::VM
+    image: package-ci/ubuntu-22.04:v4
+    flavor: b1.large
+    move_alias: mv
+    utr_download: curl -s https://artifactory.prd.it.unity3d.com/artifactory/unity-tools-local/utr-standalone/utr --output utr
+    utr_chmod: chmod +x ./utr
+    utr_cmd: ./utr
+test_module_support:
+  - name: android
+    install_command: -c android
+
+---
+
+{% for editor in test_editors %}
+{% for platform in test_platforms %}
+{% for module_support in test_module_support %}
+
+test_{{ platform.name }}_{{ editor.version }}_{{ module_support.name }}:
+  name : Test {{ editor.version }} on {{ platform.name }} with install '{{ module_support.name }}'
+  agent:
+    type: {{ platform.type }}
+    image: {{ platform.image }}
+    flavor: {{ platform.flavor}}
+  commands:
+    - npm install upm-ci-utils@stable -g --registry https://artifactory.prd.cds.internal.unity3d.com/artifactory/api/npm/upm-npm
+    - pip install unity-downloader-cli --index-url https://artifactory.prd.it.unity3d.com/artifactory/api/pypi/pypi/simple --upgrade
+    - unity-downloader-cli -u {{ editor.version }} -c editor {{ module_support.install_command }} --wait
+    - {{ platform.utr_download }} 
+    - {{ platform.utr_chmod }} 
+    - {{ platform.utr_cmd }}  --suite=editor --editor-location=.Editor --testproject="UnityProject" --artifacts_path=upm-ci~/test-results/editor-android/
+  artifacts:
+    {{ platform.name }}_{{ editor.version }}_{{ module_support.name }}_logs:
+      paths:
+        - "upm-ci~/test-results/**/*"
+{% endfor %}
+{% endfor %}
+{% endfor %}
+
+test_all_trigger:
+  name: Tests Trigger
+  agent:
+    type: Unity::VM
+    image: package-ci/win10:stable
+    flavor: b1.large
+  commands:
+    - dir
+  triggers:
+    cancel_old_ci: true
+    pull_requests:
+      - targets:
+          only:
+            - "master"
+    recurring:
+      - branch: master
+        frequency: weekly
+  artifacts:
+    logs:
+      paths:
+        - "upm-ci~/test-results/**/*"
+  dependencies:
+    {% for editor in test_editors %}
+    {% for platform in test_platforms %}
+    {% for module_support in test_module_support %}
+    - .yamato/upm-ci.yml#test_{{platform.name}}_{{editor.version}}_{{ module_support.name }}
+    {% endfor %}
+    {% endfor %}
+    {% endfor %}
+
+
