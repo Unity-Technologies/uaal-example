@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-sdsds
 
 public class MainActivity extends AppCompatActivity {
     private enum ActivityType {
