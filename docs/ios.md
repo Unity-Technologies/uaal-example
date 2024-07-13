@@ -37,18 +37,9 @@ This document explains how to include Unity as a Library into standard iOS appli
 - in "Build Phases" tab, expand "Link Binary With Libraries"
 - remove UnityFramework.framework from the list (select it and press - )
   <br><img src="images/ios/removeLink.png">
-
-**5. Expose NativeCallProxy.h**
-<br>Native application implements NativeCallsProtocol defined in following file:
-- In Project navigator, find and select Unity-iPhone / Libraries / Plugins / iOS / NativeCallProxy.h
-- enable UnityFramework in Target Membership and set header visibility from project to public (small dropdown on right side to UnityFramework)
-  <br><img src="images/ios/nativeCallProxyTarget.png">
   
- **6. Make Data folder to be part of the UnityFramework**
- <br>By default Data folder is part of Unity-iPhone target, we change that to make everything encapsulated in one single framework file.
- - change Target Membership for Data folder to UnityFramework
-   <br><img src="images/ios/dataTargetMembership.png" height='300px'>
- - (optional) If you want to use Unity-iPhone sheme you need to point UnityFramework to a new place where Data is located by calling from Unity-iPhone/MainApp/main.mm:
+ **5. (optional) If you want to use Unity-iPhone scheme**
+ - you need to point UnityFramework to a new place where Data is located by calling from Unity-iPhone/MainApp/main.mm:
    ```
    [ufw setDataBundleId: "com.unity3d.framework"];
    // On Demand Resources are not supported in this case. To make them work instead of the calls above 
