@@ -8,7 +8,6 @@ This document explains how to include Unity as a Library into standard Android a
 **Note**
 - For Unity versions from 2019.3.0b4 to 2022.2.0a17 use [19LTS-21LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/19LTS-21LTS). 
 - For Unity versions from 2022.2.0a18 to 2023.1.0a16 use [22LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/22LTS). 
-- For Unity versions from 2023.1.7f1 to 6000.0.0b12 use [23LTS branch](https://github.com/Unity-Technologies/uaal-example/tree/uaal-example/23LTS).
 
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
