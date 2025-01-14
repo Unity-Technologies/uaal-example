@@ -23,6 +23,7 @@
             android:name=".MainUnityActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
             android:hardwareAccelerated="false"
+            android:theme="@style/UnityThemeSelector"
             android:process=":Unity"
             android:screenOrientation="fullSensor"></activity>
 
@@ -30,6 +31,7 @@
             android:name=".MainUnityGameActivity"
             android:configChanges="mcc|mnc|locale|touchscreen|keyboard|keyboardHidden|navigation|orientation|screenLayout|uiMode|screenSize|smallestScreenSize|fontScale|layoutDirection|density"
             android:hardwareAccelerated="false"
+            android:theme="@style/BaseUnityGameActivityTheme"
             android:process=":Unity"
             android:screenOrientation="fullSensor"></activity>
     </application>
