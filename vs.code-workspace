@@ -1,0 +1,17 @@
+{
+	"folders": [
+		{
+			"path": "UnityProject/iosBuild",
+			"name": "unity-iosBuild"
+		},
+		{
+			"path": "UnityProject",
+			"name": "unity"
+		},
+		{
+			"path": ".",
+			"name": "root"
+		}
+	],
+	"settings": {}
+}
