@@ -5,6 +5,10 @@
 			"name": "unity-iosBuild"
 		},
 		{
+			"path": "UnityProject/androidBuild",
+			"name": "unity-androidBuild"
+		},
+		{
 			"path": "UnityProject",
 			"name": "unity"
 		},
