@@ -1,5 +1,6 @@
 #import <UIKit/UIKit.h>
 
+// TODO: add unity build as framework
 #include <UnityFramework/UnityFramework.h>
 #include <UnityFramework/NativeCallProxy.h>
 
