@@ -59,3 +59,51 @@ Main Activity | Unity is loaded and is running in a separate Activity. Light gre
   ```
   @Override public void onUnityPlayerQuitted() { SharedClass.showMainActivity(""); finish(); }
   ```
+
+## Recreate an Android activity when using Unity as a library
+
+When using Unity as a library, you can recreate an Android activity without affecting the Unity runtime. This is useful in situations where you require more control over the behavior and lifecycle of your application or when integrating multiple views within your application.
+
+To recreate an activity, consider the following steps:
+
+1. Start an Android activity.
+1. Instantiate the `UnityPlayer` as a static variable.
+1. Assign it the application context instead of an activity context.
+
+    **Note**: This step disables some functionalities of the `UnityPlayer` that depend on the activity context. Therefore, make sure these are handled explicitly.
+1. Use `unload()` to close the activity. This unloads the `UnityPlayer` without destroying it.
+
+    **Note**: Do not use `destroy()` to close the activity.
+
+Reopening the activity uses the same Unity runtime. 
+
+Refer to the following code example:
+
+```
+public class UnityActivity extends Activity implements IUnityPlayerLifecycleEvents, IUnityPermissionRequestSupport, IUnityPlayerSupport {
+    static com.unity3d.player.UnityPlayerForActivityOrService sUnityPlayer; // Static to allowing to reuse the UnityPlayer with subsequent instances of the Activity from the same process
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (sUnityPlayer == null)
+            sUnityPlayer = new UnityPlayerForActivityOrService(getApplicationContext()); // Using the Application context, and not the Activity context
+        setContentView(sUnityPlayer.getFrameLayout());
+        sUnityPlayer.getFrameLayout().requestFocus();
+    }
+
+    @Override
+    protected void onDestroy ()
+    {
+        sUnityPlayer.unload(); // Unloading the player and not destroying it. Application.Quit() should also not be used in C# scripts
+        super.onDestroy();
+    }
+
+    @Override
+    public UnityPlayerForActivityOrService getUnityPlayerConnection() {
+        return sUnityPlayer;
+    }
+
+    // ... override other functions similarly to UnityPlayerActivity
+}
+```
