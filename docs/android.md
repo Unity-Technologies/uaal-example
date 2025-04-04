@@ -81,13 +81,13 @@ Refer to the following code example:
 
 ```
 public class UnityActivity extends Activity implements IUnityPlayerLifecycleEvents, IUnityPermissionRequestSupport, IUnityPlayerSupport {
-    static com.unity3d.player.UnityPlayerForActivityOrService sUnityPlayer; // Static to allowing to reuse the UnityPlayer with subsequent instances of the Activity from the same process
+    static com.unity3d.player.UnityPlayerForActivityOrService sUnityPlayer; // Declaring as a static variable allows to reuse the UnityPlayer with subsequent instances of the Activity from the same process
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (sUnityPlayer == null)
-            sUnityPlayer = new UnityPlayerForActivityOrService(getApplicationContext()); // Using the Application context, and not the Activity context
+            sUnityPlayer = new UnityPlayerForActivityOrService(getApplicationContext()); // Using the Application context and not the Activity context
         setContentView(sUnityPlayer.getFrameLayout());
         sUnityPlayer.getFrameLayout().requestFocus();
     }
@@ -95,7 +95,7 @@ public class UnityActivity extends Activity implements IUnityPlayerLifecycleEven
     @Override
     protected void onDestroy ()
     {
-        sUnityPlayer.unload(); // Unloading the player and not destroying it. Application.Quit() should also not be used in C# scripts
+        sUnityPlayer.unload(); // Unloading the Player and not destroying it. Application.Quit() should also not be used in C# scripts
         super.onDestroy();
     }
 
