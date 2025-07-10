@@ -1,5 +1,6 @@
 test_editors:
   - version: 6000.0
+  - version: 6000.3
 test_platforms:
   - name: win
     type: Unity::VM
