@@ -33,8 +33,12 @@ namespace UAAL.EditorTests
         }
 
 
+#if UNITY_6000_3_OR_NEWER
+        private static string SevenZipPath => EditorApplication.sevenZipPath;
+#else
         private static string SevenZipPath => Path.Combine(EditorApplication.applicationContentsPath, "Tools",
             Application.platform == RuntimePlatform.WindowsEditor ? "7z.exe" : "7za");
+#endif
 
         public static void BuildProject(string location, bool cleanDirectoryOrFile, out string warnings, bool openScene = false)
         {
