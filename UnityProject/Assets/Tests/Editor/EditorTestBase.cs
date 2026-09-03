@@ -35,7 +35,7 @@ namespace UAAL.EditorTests
             PlayerSettings.SetIl2CppStacktraceInformation(NamedBuildTarget.Android, Il2CppStacktraceInformation.MethodOnly);
             PlayerSettings.Android.optimizedFramePacing = true;
             PlayerSettings.Android.splitApplicationBinary = false;
-            PlayerSettings.Android.resizableWindow = false;
+            PlayerSettings.Android.resizeableActivity = false;
         }
 
         [SetUp]
