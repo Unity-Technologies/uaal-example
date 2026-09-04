@@ -15,7 +15,7 @@ public class NativeAPI {
 public class Cube : MonoBehaviour
 {
     public Text text;
-    string lastStringColor = "";
+    string lastStringColor = "green";
 
     void AppendToText(string line)
     {
