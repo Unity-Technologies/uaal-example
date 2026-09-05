@@ -6,25 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		FF19CE193047F59F00FAB8E1 /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF19CE183047F59F00FAB8E1 /* UnityFramework.framework */; };
-		FF19CE1A3047F59F00FAB8E1 /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF19CE183047F59F00FAB8E1 /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-/* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		FF19CE1B3047F59F00FAB8E1 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				FF19CE1A3047F59F00FAB8E1 /* UnityFramework.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		FF19CE033047F23D00FAB8E1 /* NativeiOSSwiftApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NativeiOSSwiftApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF19CE183047F59F00FAB8E1 /* UnityFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,7 +24,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF19CE193047F59F00FAB8E1 /* UnityFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +65,6 @@
 				FF19CDFF3047F23D00FAB8E1 /* Sources */,
 				FF19CE003047F23D00FAB8E1 /* Frameworks */,
 				FF19CE013047F23D00FAB8E1 /* Resources */,
-				FF19CE1B3047F59F00FAB8E1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
