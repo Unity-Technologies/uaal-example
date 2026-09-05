@@ -91,7 +91,7 @@ struct ContentView: View {
         VStack(spacing: 20) {
             Circle()
                 .fill(unity.hostColor ?? statusColor)
-                .frame(width: 80, height: 80)
+                .frame(width: 120, height: 120)
 
             Button("Init Unity") {
                 if uaal.hasQuit {
@@ -127,6 +127,7 @@ struct ContentView: View {
                 }
             }
         }
+        .font(.title)
         .padding()
         .alert(alertTitle, isPresented: $showingAlert) {
             Button("Ok") {}

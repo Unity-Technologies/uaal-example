@@ -30,6 +30,11 @@ public class Cube : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Escape)) Application.Quit();
     }
 
+    void Start()
+    {
+        ChangeColor(lastStringColor);
+    }    
+
     void ChangeColor(string newColor)
     {
         AppendToText("Changing Color to " + newColor);
@@ -39,6 +44,7 @@ public class Cube : MonoBehaviour
         if (newColor == "red") GetComponent<Renderer>().material.color = Color.red;
         else if (newColor == "blue") GetComponent<Renderer>().material.color = Color.blue;
         else if (newColor == "yellow") GetComponent<Renderer>().material.color = Color.yellow;
+        else if (newColor == "green") GetComponent<Renderer>().material.color = Color.green;
         else GetComponent<Renderer>().material.color = Color.black;
     }
 
@@ -64,8 +70,8 @@ public class Cube : MonoBehaviour
     {
         GUIStyle style = new GUIStyle("button");
         style.fontSize = 45;
-        if (GUI.Button(new Rect(10, 10, 200, 100), "Red", style)) ChangeColor("red");
-        if (GUI.Button(new Rect(10, 110, 200, 100), "Blue", style)) ChangeColor("blue");
+        if (GUI.Button(new Rect(10, 110, 200, 100), "Red", style)) ChangeColor("red");
+        if (GUI.Button(new Rect(220, 110, 200, 100), "Blue", style)) ChangeColor("blue");
         if (GUI.Button(new Rect(10, 300, 600, 100), "Show Main With Color", style)) ShowHostMainWindow();
 
         if (GUI.Button(new Rect(10, 400, 400, 100), "Unload", style)) Application.Unload();
