@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bf0b26cbc743a4f9584797ec726f0414
+guid: 18965243c1b9a4697b65c91f953fd64c
 PluginImporter:
   externalObjects: {}
   serializedVersion: 3
@@ -58,7 +58,7 @@ PluginImporter:
         CPU: AnyCPU
         CompileFlags: 
         FrameworkDependencies: 
-        XcodeProjectType: ObjectiveC
+        XcodeProjectType: Swift
   userData: 
   assetBundleName: 
   assetBundleVariant: 

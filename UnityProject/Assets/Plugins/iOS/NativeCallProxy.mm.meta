@@ -2,7 +2,7 @@ fileFormatVersion: 2
 guid: fd57ecaa04fd244eaaeee41727d10169
 PluginImporter:
   externalObjects: {}
-  serializedVersion: 2
+  serializedVersion: 3
   iconMap: {}
   executionOrder: {}
   defineConstraints: []
@@ -11,9 +11,7 @@ PluginImporter:
   isExplicitlyReferenced: 0
   validateReferences: 1
   platformData:
-  - first:
-      : Any
-    second:
+    Any:
       enabled: 0
       settings:
         Exclude Editor: 1
@@ -23,28 +21,44 @@ PluginImporter:
         Exclude Win64: 1
         Exclude iOS: 0
         Exclude tvOS: 0
-  - first:
-      Any: 
-    second:
-      enabled: 0
-      settings: {}
-  - first:
-      Editor: Editor
-    second:
+    Editor:
       enabled: 0
       settings:
+        CPU: AnyCPU
         DefaultValueInitialized: true
-  - first:
-      iPhone: iOS
-    second:
+        OS: AnyOS
+    Linux64:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
+    OSXUniversal:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
+    Win:
+      enabled: 0
+      settings:
+        CPU: x86
+    Win64:
+      enabled: 0
+      settings:
+        CPU: AnyCPU
+    iOS:
       enabled: 1
       settings:
         AddToEmbeddedBinaries: false
-  - first:
-      tvOS: tvOS
-    second:
+        CPU: AnyCPU
+        CompileFlags: 
+        FrameworkDependencies: 
+        XcodeProjectType: All
+    tvOS:
       enabled: 1
-      settings: {}
+      settings:
+        AddToEmbeddedBinaries: false
+        CPU: AnyCPU
+        CompileFlags: 
+        FrameworkDependencies: 
+        XcodeProjectType: ObjectiveC
   userData: 
   assetBundleName: 
   assetBundleVariant: 

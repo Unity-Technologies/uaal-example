@@ -1,4 +1,6 @@
 .DS_Store
-/DerivedData
-/NativeiOSSwiftApp/DerivedData
-/UnityProject/iosBuild
+DerivedData/
+xcuserdata/
+*.xcuserstate
+/UnityProject/iosBuild/
+

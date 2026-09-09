@@ -1,45 +1,26 @@
 import SwiftUI
 import UIKit
 import UnityAPI
+import UnityFramework
 import Observation
 
 @Observable
-	class UnityUaaL: NSObject, NativeCallsProtocol {
-    static let shared = UnityUaaL()
-    var isShowingHost = false
-    var hostColor: Color?
+class Helper: NSObject , NativeCallsProtocol {
+    static let shared = Helper()
+    var lastCircleColor: Color? = nil
 
     private override init() {
         super.init()
         UaaLAPI.shared.onReadyForNativeCalls = {
-            FrameworkLibAPI.registerAPIforNativeCalls(UnityUaaL.shared)
-        }
-        UaaLAPI.shared.onDidUnload = { [weak self] in
-            self?.isShowingHost = false
-        }
-        UaaLAPI.shared.onDidQuit = { [weak self] in
-            self?.isShowingHost = false
-        }
-    }
-
-    func runEmbedded() {
-        UaaLAPI.shared.runEmbedded()
-        if UaaLAPI.shared.isRunning {
-            installUnityOverlayButtons()
+            FrameworkLibAPI.registerAPIforNativeCalls(self)
         }
     }
 
     func showHostMainWindow(_ color: String!) {
+        // Callback from unity managed code
+        // [Show Host Main With Color Button] -> il2cpp -> extern C void showHostMainWindow() in NativeCallProxy.mm -> api (we set it with FrameworkLibAPI.registerAPIforNativeCalls) -> showHostMainWindow -> Helper:NSObject this method
         UaaLAPI.shared.hideUnityWindow()
-        if let parsed = Self.parseColor(color) {
-            hostColor = parsed
-        }
-        isShowingHost = true
-    }
-
-    func showUnity() {
-        UaaLAPI.shared.showUnityWindow()
-        isShowingHost = false
+        lastCircleColor = Self.parseColor(color)
     }
 
     private static func parseColor(_ name: String?) -> Color? {
@@ -53,8 +34,7 @@ import Observation
     }
 
     private var overlayInstalled = false
-
-    private func installUnityOverlayButtons() {
+    public func installUnityOverlayButtons() {
         guard !overlayInstalled else { return }
         guard let rootView = UaaLAPI.shared.unityRootView else { return }
         overlayInstalled = true
@@ -64,8 +44,8 @@ import Observation
         var y: CGFloat = 300
         let spacing: CGFloat = 60
 
-        rootView.addOverlayButton("Show Main", center: CGPoint(x: x, y: y), size: btnSize, color: .green) { [weak self] in
-            self?.showHostMainWindow("")
+        rootView.addOverlayButton("Show Main", center: CGPoint(x: x, y: y), size: btnSize, color: .green) {
+            [weak self] in self?.showHostMainWindow("")
         }
         y += spacing
         rootView.addOverlayButton("Send Msg", center: CGPoint(x: x, y: y), size: btnSize, color: .yellow) {
@@ -83,22 +63,16 @@ import Observation
 }
 
 struct ContentView: View {
-    var unity = UnityUaaL.shared
+    var helper = Helper.shared
     var uaal = UaaLAPI.shared
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     @State private var showingAlert = false
-
-    var statusColor: Color {
-        if uaal.hasQuit { return .red }
-        if uaal.isRunning { return .green }
-        return .gray
-    }
-
+    
     var body: some View {
         VStack(spacing: 20) {
             Circle()
-                .fill(unity.hostColor ?? statusColor)
+                .fill(helper.lastCircleColor ?? .gray)
                 .frame(width: 120, height: 120)
 
             Button("Init Unity") {
@@ -107,7 +81,8 @@ struct ContentView: View {
                 } else if uaal.isRunning {
                     showAlert("Unity already initialized", "Unload Unity first")
                 } else {
-                    unity.runEmbedded()
+                    uaal.runEmbedded()
+                    helper.installUnityOverlayButtons()
                 }
             }
 
@@ -115,7 +90,7 @@ struct ContentView: View {
                 if !uaal.isRunning {
                     showAlert("Unity is not initialized", "Initialize Unity first")
                 } else {
-                    unity.showUnity()
+                    uaal.showUnityWindow()
                 }
             }
 

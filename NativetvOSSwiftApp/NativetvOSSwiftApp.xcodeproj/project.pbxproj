@@ -7,18 +7,18 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		FF19CE56304C045E00FAB8E1 /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF19CE55304C045E00FAB8E1 /* UnityFramework.framework */; };
-		FF19CE57304C045E00FAB8E1 /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF19CE55304C045E00FAB8E1 /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		FF4B36F2304E975400415EA1 /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4B36F1304E975400415EA1 /* UnityFramework.framework */; };
+		FF4B36F3304E975400415EA1 /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF4B36F1304E975400415EA1 /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		FF19CE58304C045E00FAB8E1 /* Embed Frameworks */ = {
+		FF4B36F4304E975400415EA1 /* Embed Frameworks */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				FF19CE57304C045E00FAB8E1 /* UnityFramework.framework in Embed Frameworks */,
+				FF4B36F3304E975400415EA1 /* UnityFramework.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -26,53 +26,51 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		FF19CE033047F23D00FAB8E1 /* NativeiOSSwiftApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NativeiOSSwiftApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF19CE183047F59F00FAB8E1 /* UnityFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
-		FF19CE55304C045E00FAB8E1 /* UnityFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF4B36D4304E96C900415EA1 /* NativetvOSSwiftApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NativetvOSSwiftApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		FF4B36F1304E975400415EA1 /* UnityFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		FF19CE053047F23D00FAB8E1 /* NativeiOSSwiftApp */ = {
+		FF4B36D6304E96C900415EA1 /* NativetvOSSwiftApp */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
-			path = NativeiOSSwiftApp;
+			path = NativetvOSSwiftApp;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		FF19CE003047F23D00FAB8E1 /* Frameworks */ = {
+		FF4B36D1304E96C900415EA1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF19CE56304C045E00FAB8E1 /* UnityFramework.framework in Frameworks */,
+				FF4B36F2304E975400415EA1 /* UnityFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		FF19CDFA3047F23D00FAB8E1 = {
+		FF4B36CB304E96C900415EA1 = {
 			isa = PBXGroup;
 			children = (
-				FF19CE053047F23D00FAB8E1 /* NativeiOSSwiftApp */,
-				FF19CE173047F59F00FAB8E1 /* Frameworks */,
-				FF19CE043047F23D00FAB8E1 /* Products */,
+				FF4B36D6304E96C900415EA1 /* NativetvOSSwiftApp */,
+				FF4B36F0304E975400415EA1 /* Frameworks */,
+				FF4B36D5304E96C900415EA1 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		FF19CE043047F23D00FAB8E1 /* Products */ = {
+		FF4B36D5304E96C900415EA1 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				FF19CE033047F23D00FAB8E1 /* NativeiOSSwiftApp.app */,
+				FF4B36D4304E96C900415EA1 /* NativetvOSSwiftApp.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		FF19CE173047F59F00FAB8E1 /* Frameworks */ = {
+		FF4B36F0304E975400415EA1 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				FF19CE55304C045E00FAB8E1 /* UnityFramework.framework */,
-				FF19CE183047F59F00FAB8E1 /* UnityFramework.framework */,
+				FF4B36F1304E975400415EA1 /* UnityFramework.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -80,65 +78,65 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		FF19CE023047F23D00FAB8E1 /* NativeiOSSwiftApp */ = {
+		FF4B36D3304E96C900415EA1 /* NativetvOSSwiftApp */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = FF19CE0E3047F23F00FAB8E1 /* Build configuration list for PBXNativeTarget "NativeiOSSwiftApp" */;
+			buildConfigurationList = FF4B36DF304E96CA00415EA1 /* Build configuration list for PBXNativeTarget "NativetvOSSwiftApp" */;
 			buildPhases = (
-				FF19CDFF3047F23D00FAB8E1 /* Sources */,
-				FF19CE003047F23D00FAB8E1 /* Frameworks */,
-				FF19CE013047F23D00FAB8E1 /* Resources */,
-				FF19CE58304C045E00FAB8E1 /* Embed Frameworks */,
+				FF4B36D0304E96C900415EA1 /* Sources */,
+				FF4B36D1304E96C900415EA1 /* Frameworks */,
+				FF4B36D2304E96C900415EA1 /* Resources */,
+				FF4B36F4304E975400415EA1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				FF19CE053047F23D00FAB8E1 /* NativeiOSSwiftApp */,
+				FF4B36D6304E96C900415EA1 /* NativetvOSSwiftApp */,
 			);
-			name = NativeiOSSwiftApp;
+			name = NativetvOSSwiftApp;
 			packageProductDependencies = (
 			);
-			productName = NativeiOSSwiftApp;
-			productReference = FF19CE033047F23D00FAB8E1 /* NativeiOSSwiftApp.app */;
+			productName = NativetvOSSwiftApp;
+			productReference = FF4B36D4304E96C900415EA1 /* NativetvOSSwiftApp.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		FF19CDFB3047F23D00FAB8E1 /* Project object */ = {
+		FF4B36CC304E96C900415EA1 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				BuildIndependentTargetsInParallel = 1;
 				LastSwiftUpdateCheck = 2660;
 				LastUpgradeCheck = 2660;
 				TargetAttributes = {
-					FF19CE023047F23D00FAB8E1 = {
+					FF4B36D3304E96C900415EA1 = {
 						CreatedOnToolsVersion = 26.6;
 					};
 				};
 			};
-			buildConfigurationList = FF19CDFE3047F23D00FAB8E1 /* Build configuration list for PBXProject "NativeiOSSwiftApp" */;
+			buildConfigurationList = FF4B36CF304E96C900415EA1 /* Build configuration list for PBXProject "NativetvOSSwiftApp" */;
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 				Base,
 			);
-			mainGroup = FF19CDFA3047F23D00FAB8E1;
+			mainGroup = FF4B36CB304E96C900415EA1;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = FF19CE043047F23D00FAB8E1 /* Products */;
+			productRefGroup = FF4B36D5304E96C900415EA1 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				FF19CE023047F23D00FAB8E1 /* NativeiOSSwiftApp */,
+				FF4B36D3304E96C900415EA1 /* NativetvOSSwiftApp */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		FF19CE013047F23D00FAB8E1 /* Resources */ = {
+		FF4B36D2304E96C900415EA1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -148,7 +146,7 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		FF19CDFF3047F23D00FAB8E1 /* Sources */ = {
+		FF4B36D0304E96C900415EA1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -158,7 +156,7 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		FF19CE0C3047F23F00FAB8E1 /* Debug */ = {
+		FF4B36DD304E96CA00415EA1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -211,18 +209,18 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = appletvos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				TVOS_DEPLOYMENT_TARGET = 26.5;
 			};
 			name = Debug;
 		};
-		FF19CE0D3047F23F00FAB8E1 /* Release */ = {
+		FF4B36DE304E96CA00415EA1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -269,106 +267,96 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 26.5;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
-				SDKROOT = iphoneos;
+				SDKROOT = appletvos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				TVOS_DEPLOYMENT_TARGET = 26.5;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
 		};
-		FF19CE0F3047F23F00FAB8E1 /* Debug */ = {
+		FF4B36E0304E96CA00415EA1 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KFR892D7NT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../UnityProject/iosBuild/UnityFramework/Libraries/Plugins/iOS";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.uaal.NativeiOSSwiftApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.uaal.NativetvOSSwiftApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "NativeiOSSwiftApp/NativeiOSSwiftApp-Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Debug;
 		};
-		FF19CE103047F23F00FAB8E1 /* Release */ = {
+		FF4B36E1304E96CA00415EA1 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_APPICON_NAME = "App Icon & Top Shelf Image";
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = KFR892D7NT;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
-				HEADER_SEARCH_PATHS = "$(SRCROOT)/../UnityProject/iosBuild/UnityFramework/Libraries/Plugins/iOS";
-				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
-				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UIUserInterfaceStyle = Automatic;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.uaal.NativeiOSSwiftApp;
+				PRODUCT_BUNDLE_IDENTIFIER = com.uaal.NativetvOSSwiftApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "NativeiOSSwiftApp/NativeiOSSwiftApp-Bridging-Header.h";
 				SWIFT_UPCOMING_FEATURE_MEMBER_IMPORT_VISIBILITY = YES;
 				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 3;
 			};
 			name = Release;
 		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		FF19CDFE3047F23D00FAB8E1 /* Build configuration list for PBXProject "NativeiOSSwiftApp" */ = {
+		FF4B36CF304E96C900415EA1 /* Build configuration list for PBXProject "NativetvOSSwiftApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FF19CE0C3047F23F00FAB8E1 /* Debug */,
-				FF19CE0D3047F23F00FAB8E1 /* Release */,
+				FF4B36DD304E96CA00415EA1 /* Debug */,
+				FF4B36DE304E96CA00415EA1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		FF19CE0E3047F23F00FAB8E1 /* Build configuration list for PBXNativeTarget "NativeiOSSwiftApp" */ = {
+		FF4B36DF304E96CA00415EA1 /* Build configuration list for PBXNativeTarget "NativetvOSSwiftApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				FF19CE0F3047F23F00FAB8E1 /* Debug */,
-				FF19CE103047F23F00FAB8E1 /* Release */,
+				FF4B36E0304E96CA00415EA1 /* Debug */,
+				FF4B36E1304E96CA00415EA1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = FF19CDFB3047F23D00FAB8E1 /* Project object */;
+	rootObject = FF4B36CC304E96C900415EA1 /* Project object */;
 }
