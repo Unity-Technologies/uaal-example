@@ -1,13 +1,13 @@
-## Integrating Unity as a library (Swift Project Type) into standard Swift based iOS application
-This document explains how to include Unity as a Library (Swift Project Type) into standard iOS Swift based application. You can read more about [Unity as a Library](https://docs.unity3d.com/2019.3/Documentation/Manual/UnityasaLibrary.html).
+## Integrating Unity as a library (Swift Project Type) into standard Swift based iOS / tvOS application
+This document explains how to include Unity as a Library (Swift Project Type) into standard iOS / tvOS Swift based application. You can read more about [Unity as a Library](https://docs.unity3d.com/2019.3/Documentation/Manual/UnityasaLibrary.html).
 
 **Requirements:**
-- Minimum iOS Version 16.0+
-- Xcode 14.0+ ‼️ align with requrements for 6000.7
+- Minimum iOS / tvOS Version 16.0+
+- Xcode 16.0+
 - Unity version 6000.7+
 
 **Notes:**
-- Integration steps for tvOS are exactly the same as of iOS
+- Integration steps for tvOS are the same as for iOS
 
 **Integration:**
 **1. Get source**
@@ -31,32 +31,42 @@ This document explains how to include Unity as a Library (Swift Project Type) in
     
 **3. Setup Xcode workspace**
 <br>Xcode workspace allows to work on multiple projects simultaneously and combine their products
-- open NativeiOSSwiftApp.xcodeproj from Xcode
+- open NativeiOSSwiftApp.xcodeproj from Xcode (or NativetvOSSwiftApp.xcodeproj for tvOS)
 - create workspace and save it at uaal-example/both.xcworkspace. (File / New / Workspace)
   <br><img src="images/iosSwift/workspaceLocation.png">
 - close NativeiOSSwiftApp.xcodeproj project all Next steps are done from just created Workspace project
-- add NativeiOSSwiftApp.xcodeproj and generated UaaLExample.xcodeproj from step #2 to workspace on a same level ( File / Add Files to “both” )
+- add NativeiOSSwiftApp.xcodeproj and generated UaaLExample.xcodeproj from step #2 to workspace on a same level ( File / Add Files to "both" )
   <br><img src="images/iosSwift/workspaceProjects.png">
 
 **4. Add UnityFramework.framework**
 <br>With this step we add Unity player in the form of a framework to NativeiOSSwiftApp. 
-⚠️ UaaL with Swift Project Type supported only via static UnityFramework.framewok loading, after this step UnityFramework.framework binary will be loaded before main() method of your host application. Static initializer of Unity Project will be called before main, also you app launch time will slightly increase, memory usage will increase.
 - select NativeiOSSwiftApp target from NativeiOSSwiftApp project
 - in "General" tab / "Frameworks, Libraries, and Embedded  Content" press +
 - Add Workspace/UaaLExample/UnityFramework.framework
  <br><img src="images/iosSwift/addToEmbeddedContent.png">
 
-**5. Expose NativeCallProxy.h**
-<br>Native application implements NativeCallsProtocol defined in following file:
-- In Project navigator, find and select Unity-iPhone / Libraries / Plugins / iOS / NativeCallProxy.h
-- enable UnityFramework in Target Membership and set header visibility from project to public (small dropdown on right side to UnityFramework)
-  <br><img src="images/ios/nativeCallProxyTarget.png">
-  
+Note: UaaL with Swift Project Type uses static UnityFramework.framework loading. The framework binary is loaded before main() of your host application. This means static initializers run before main, app launch time will slightly increase, and memory usage will increase.
+
+**5. NativeCallProxy — Unity ↔ Native bridge**
+<br>The Unity project includes a Swift-native plugin at Assets/Plugins/iOS/NativeCallProxy.swift that defines the bridge between Unity C# code and the native host app. This file is compiled into UnityFramework and its public types are automatically visible to the host app — no header exposure or umbrella header changes needed (as in Objective-C integration).
+
+The plugin defines:
+- `NativeCallsProtocol` — protocol your host app conforms to for receiving calls from Unity
+- `FrameworkLibAPI` — registration point to connect your protocol implementation
+- `@_cdecl` functions — C symbols that IL2CPP calls via `[DllImport("__Internal")]`
+
+In the host app, add `import UnityFramework` to access these types.
+
+**Native → Unity (Swift calling C#):**
+```swift
+UaaLAPI.shared.sendMessage(toGameObject: "Cube", functionName: "ChangeColor", message: "red")
+```
+
  **6. Make Data folder to be part of the UnityFramework**
  <br>In UaaLExample project Data folder is part of Unity-iPhone target by default, we change that to be part of UnityFramework target to make data encapsulated in one single file UnityFramework.framework.
  - change Target Membership for Data folder to UnityFramework
    <br><img src="images/iosSwift/dataTargetMembership.png">
- - (optional) If you want UaaLExample sheme to continue to work after change above you need to call UnitySetDataBundleDirWithBundleId("com.unity3d.framework") to point where Data is located in uaal-example/UnityProject/iosBuild/UnityAPI/AppIntegration/AppDelegate.swift:
+ - (optional) If you want UaaLExample scheme to continue to work after change above you need to call UnitySetDataBundleDirWithBundleId("com.unity3d.framework") to point where Data is located in uaal-example/UnityProject/iosBuild/UnityAPI/AppIntegration/AppDelegate.swift:
    ```
     public func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         UnitySetDataBundleDirWithBundleId("com.unity3d.framework")
@@ -73,34 +83,9 @@ If all went successfully at this point you should be able to run NativeiOSSwiftA
 Native View | Unity View
 ------------ | -------------
 <img src="images/iosSwift/ssNative.png" width='300px' > | <img src="images/iosSwift/ssUnity.png" width='300px'>
-Unity is not loaded(‼️ be more precise), click Init to load unity framework and show its view. | Unity is loaded and running, colorful buttons in the middle are added by NativeiOSApp to Unity View.
+Unity is not initialized, click Init to start Unity engine and show its view. | Unity is running, colorful buttons on the left are added by the host app as overlay on Unity View.
 
-## Notes
-**Loading**
-‼️ (Loading works diffrently for swift) Unity player is controlled with UnityFramework object. To get it you call UnityFrameworkLoad (it loads UnityFramework.framework if it wasn't, and returns singleton instance to UnityFramework class observe Unity-iPhone/UnityFramework/UnityFramework.h for its API ). 
-Observe UnityFrameworkLoad in: NativeiOSApp/NativeiOSApp/MainViewController.mm or in Unity-iPhone/MainApp/main.mm
-```
-#include <UnityFramework/UnityFramework.h>
+## UaaLAPI
+‼️ TBD check UaaLAPI documentation for more details
 
-UnityFramework* UnityFrameworkLoad()
-{
-    NSString* bundlePath = nil;
-    bundlePath = [[NSBundle mainBundle] bundlePath];
-    bundlePath = [bundlePath stringByAppendingString: @"/Frameworks/UnityFramework.framework"];
 
-    NSBundle* bundle = [NSBundle bundleWithPath: bundlePath];
-    if ([bundle isLoaded] == false) [bundle load];
-
-    UnityFramework* ufw = [bundle.principalClass getInstance];
-    if (![ufw appController])
-    {
-        // Initialize Unity for a first time
-        [ufw setExecuteHeader: &_mh_execute_header];       
-
-        // Keep in sync with Data folder Target Membership setting
-        [ufw setDataBundleId: "com.unity3d.framework"]; 
-       
-    }
-    return ufw;
-}
-```
