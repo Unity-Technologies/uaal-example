@@ -50,7 +50,7 @@ PluginImporter:
         CPU: AnyCPU
         CompileFlags: 
         FrameworkDependencies: 
-        XcodeProjectType: All
+        XcodeProjectType: ObjectiveC
     tvOS:
       enabled: 1
       settings:

@@ -50,7 +50,7 @@ PluginImporter:
         CPU: AnyCPU
         CompileFlags: 
         FrameworkDependencies: 
-        XcodeProjectType: All
+        XcodeProjectType: Swift
     tvOS:
       enabled: 1
       settings:
