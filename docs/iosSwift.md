@@ -59,16 +59,16 @@ In the host app, add `import UnityFramework` to access these types.
 
 **Native → Unity (Swift calling C#):**
 ```swift
-UaaLAPI.shared.sendMessage(toGameObject: "Cube", functionName: "ChangeColor", message: "red")
+UnityApp.shared.sendMessage(toGameObject: "Cube", functionName: "ChangeColor", message: "red")
 ```
 
  **6. Make Data folder to be part of the UnityFramework**
  <br>In UaaLExample project Data folder is part of Unity-iPhone target by default, we change that to be part of UnityFramework target to make data encapsulated in one single file UnityFramework.framework.
  - change Target Membership for Data folder to UnityFramework
    <br><img src="images/iosSwift/dataTargetMembership.png">
- - (optional) If you want UaaLExample scheme to continue to work after change above you need to call UnitySetDataBundleDirWithBundleId("com.unity3d.framework") to point where Data is located in uaal-example/UnityProject/iosBuild/UnityAPI/AppIntegration/AppDelegate.swift:
+ - (optional) If you want UaaLExample scheme to continue to work after change above you need to call UnitySetDataBundleDirWithBundleId("com.unity3d.framework") to point where Data is located in uaal-example/UnityProject/iosBuild/UnityAPI/AppIntegration/UnityAppDelegate.swift:
    ```
-    public func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    open func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         UnitySetDataBundleDirWithBundleId("com.unity3d.framework")
         return UnityPlayer.shared.application(application, willFinishLaunchingWithOptions: launchOptions)
     }
@@ -85,7 +85,7 @@ Native View | Unity View
 <img src="images/iosSwift/ssNative.png" width='300px' > | <img src="images/iosSwift/ssUnity.png" width='300px'>
 Unity is not initialized, click Init to start Unity engine and show its view. | Unity is running, colorful buttons on the left are added by the host app as overlay on Unity View.
 
-## UaaLAPI
-‼️ TBD check UaaLAPI documentation for more details
+## UnityApp
+‼️ TBD check UnityApp documentation for more details
 
 

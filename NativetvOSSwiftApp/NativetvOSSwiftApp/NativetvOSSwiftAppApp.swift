@@ -11,15 +11,16 @@ class Helper: NSObject , NativeCallsProtocol {
 
     private override init() {
         super.init()
-        UaaLAPI.shared.onReadyForNativeCalls = {
+        NotificationCenter.default.addObserver(
+            forName: UnityNotifications.unityDidStartEngine,
+            object: nil, queue: .main
+        ) { _ in
             FrameworkLibAPI.registerAPIforNativeCalls(self)
         }
     }
 
     func showHostMainWindow(_ color: String!) {
-        // Callback from unity managed code
-        // [Show Host Main With Color Button] -> il2cpp -> extern C void showHostMainWindow() in NativeCallProxy.mm -> api (we set it with FrameworkLibAPI.registerAPIforNativeCalls) -> showHostMainWindow -> Helper:NSObject this method
-        UaaLAPI.shared.hideUnityWindow()
+        UnityApp.shared.hideUnityWindow()
         lastCircleColor = Self.parseColor(color)
     }
 
@@ -36,7 +37,7 @@ class Helper: NSObject , NativeCallsProtocol {
     private var overlayInstalled = false
     public func installUnityOverlayButtons() {
         guard !overlayInstalled else { return }
-        guard let rootView = UaaLAPI.shared.unityRootView else { return }
+        guard let rootView = UnityApp.shared.unityRootView else { return }
         overlayInstalled = true
 
         let btnSize = CGSize(width: 240, height: 50)
@@ -49,26 +50,26 @@ class Helper: NSObject , NativeCallsProtocol {
         }
         y += spacing
         rootView.addOverlayButton("Send Msg", center: CGPoint(x: x, y: y), size: btnSize, color: .yellow) {
-            UaaLAPI.shared.sendMessage(toGameObject: "Cube", functionName: "ChangeColor", message: "yellow")
+            UnityApp.shared.sendMessage(toGameObject: "Cube", functionName: "ChangeColor", message: "yellow")
         }
         y += spacing
         rootView.addOverlayButton("Unload", center: CGPoint(x: x, y: y), size: btnSize, color: .red) {
-            UaaLAPI.shared.unload()
+            UnityApp.shared.unload()
         }
         y += spacing
         rootView.addOverlayButton("Quit", center: CGPoint(x: x, y: y), size: btnSize, color: .red) {
-            UaaLAPI.shared.quit()
+            UnityApp.shared.quit()
         }
     }
 }
 
 struct ContentView: View {
     var helper = Helper.shared
-    var uaal = UaaLAPI.shared
+    var unity = UnityApp.shared
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     @State private var showingAlert = false
-    
+
     var body: some View {
         VStack(spacing: 20) {
             Circle()
@@ -76,37 +77,37 @@ struct ContentView: View {
                 .frame(width: 120, height: 120)
 
             Button("Init Unity") {
-                if uaal.hasQuit {
+                if unity.hasQuit {
                     showAlert("Unity cannot be initialized after quit", "Use unload instead")
-                } else if uaal.isRunning {
+                } else if unity.isRunning {
                     showAlert("Unity already initialized", "Unload Unity first")
                 } else {
-                    uaal.runEmbedded()
+                    unity.start(frameworkBundleId: "com.unity3d.framework")
                     helper.installUnityOverlayButtons()
                 }
             }
 
             Button("Show Unity") {
-                if !uaal.isRunning {
+                if !unity.isRunning {
                     showAlert("Unity is not initialized", "Initialize Unity first")
                 } else {
-                    uaal.showUnityWindow()
+                    unity.showUnityWindow()
                 }
             }
 
             Button("Unload Unity") {
-                if !uaal.isRunning {
+                if !unity.isRunning {
                     showAlert("Unity is not initialized", "Initialize Unity first")
                 } else {
-                    uaal.unload()
+                    unity.unload()
                 }
             }
 
             Button("Quit Unity") {
-                if !uaal.isRunning {
+                if !unity.isRunning {
                     showAlert("Unity is not initialized", "Initialize Unity first")
                 } else {
-                    uaal.quit()
+                    unity.quit()
                 }
             }
         }
