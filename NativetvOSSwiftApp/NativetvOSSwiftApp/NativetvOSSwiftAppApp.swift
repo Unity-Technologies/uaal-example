@@ -5,22 +5,62 @@ import UnityFramework
 import Observation
 
 @Observable
-class Helper: NSObject , NativeCallsProtocol {
+class Helper: NSObject, NativeCallsProtocol {
     static let shared = Helper()
     var lastCircleColor: Color? = nil
+    var isUnityRunning = false
+    var hasUnityQuit = false
+    var unityWindow: UIWindow?
 
     private override init() {
         super.init()
-        NotificationCenter.default.addObserver(
-            forName: UnityNotifications.unityDidStartEngine,
-            object: nil, queue: .main
-        ) { _ in
+        let nc = NotificationCenter.default
+        nc.addObserver(forName: UnityNotifications.unityDidInitializeRuntime, object: nil, queue: .main) { _ in
             FrameworkLibAPI.registerAPIforNativeCalls(self)
+            self.isUnityRunning = true
+        }
+        nc.addObserver(forName: UnityNotifications.unityDidUnload, object: nil, queue: .main) { _ in
+            self.unityWindow?.isHidden = true
+            self.isUnityRunning = false
+            self.overlayInstalled = false
+        }
+        nc.addObserver(forName: UnityNotifications.unityDidQuit, object: nil, queue: .main) { _ in
+            self.unityWindow?.isHidden = true
+            self.isUnityRunning = false
+            self.hasUnityQuit = true
         }
     }
 
+    func startUnity() {
+        guard !hasUnityQuit, !isUnityRunning else { return }
+
+        UnityPlayer.shared.terminatesOnQuit = false
+        UnitySetDataBundleDirWithBundleId("com.unity3d.framework")
+        UnityPlayer.shared.startEngine()
+        isUnityRunning = true
+
+        guard let windowScene = UIApplication.shared.connectedScenes
+            .compactMap({ $0 as? UIWindowScene })
+            .first
+        else { return }
+
+        let window = UIWindow(windowScene: windowScene)
+        let controller = TvOSEventViewController(
+            rootView: UnityRenderingView().ignoresSafeArea(),
+            responder: UnityPlayer.shared.renderingView
+        )
+        controller.view.backgroundColor = .clear
+        window.rootViewController = controller
+        unityWindow = window
+        window.makeKeyAndVisible()
+
+        UnityPlayer.shared.sceneDidBecomeActive(windowScene)
+
+        installUnityOverlayButtons()
+    }
+
     func showHostMainWindow(_ color: String!) {
-        UnityApp.shared.hideUnityWindow()
+        unityWindow?.isHidden = true
         lastCircleColor = Self.parseColor(color)
     }
 
@@ -35,9 +75,9 @@ class Helper: NSObject , NativeCallsProtocol {
     }
 
     private var overlayInstalled = false
-    public func installUnityOverlayButtons() {
+    func installUnityOverlayButtons() {
         guard !overlayInstalled else { return }
-        guard let rootView = UnityApp.shared.unityRootView else { return }
+        guard let rootView = unityWindow else { return }
         overlayInstalled = true
 
         let btnSize = CGSize(width: 240, height: 50)
@@ -50,22 +90,21 @@ class Helper: NSObject , NativeCallsProtocol {
         }
         y += spacing
         rootView.addOverlayButton("Send Msg", center: CGPoint(x: x, y: y), size: btnSize, color: .yellow) {
-            UnityApp.shared.sendMessage(toGameObject: "Cube", functionName: "ChangeColor", message: "yellow")
+            UnityPlayer.shared.sendMessage(toGameObject: "Cube", method: "ChangeColor", argument: "yellow")
         }
         y += spacing
         rootView.addOverlayButton("Unload", center: CGPoint(x: x, y: y), size: btnSize, color: .red) {
-            UnityApp.shared.unload()
+            UnityPlayer.shared.unload()
         }
         y += spacing
         rootView.addOverlayButton("Quit", center: CGPoint(x: x, y: y), size: btnSize, color: .red) {
-            UnityApp.shared.quit()
+            UnityPlayer.shared.quit()
         }
     }
 }
 
 struct ContentView: View {
     var helper = Helper.shared
-    var unity = UnityApp.shared
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     @State private var showingAlert = false
@@ -77,37 +116,37 @@ struct ContentView: View {
                 .frame(width: 120, height: 120)
 
             Button("Init Unity") {
-                if unity.hasQuit {
+                if helper.hasUnityQuit {
                     showAlert("Unity cannot be initialized after quit", "Use unload instead")
-                } else if unity.isRunning {
+                } else if helper.isUnityRunning {
                     showAlert("Unity already initialized", "Unload Unity first")
                 } else {
-                    unity.start(frameworkBundleId: "com.unity3d.framework")
-                    helper.installUnityOverlayButtons()
+                    helper.startUnity()
                 }
             }
 
             Button("Show Unity") {
-                if !unity.isRunning {
+                if !helper.isUnityRunning {
                     showAlert("Unity is not initialized", "Initialize Unity first")
                 } else {
-                    unity.showUnityWindow()
+                    helper.unityWindow?.isHidden = false
+                    helper.unityWindow?.makeKeyAndVisible()
                 }
             }
 
             Button("Unload Unity") {
-                if !unity.isRunning {
+                if !helper.isUnityRunning {
                     showAlert("Unity is not initialized", "Initialize Unity first")
                 } else {
-                    unity.unload()
+                    UnityPlayer.shared.unload()
                 }
             }
 
             Button("Quit Unity") {
-                if !unity.isRunning {
+                if !helper.isUnityRunning {
                     showAlert("Unity is not initialized", "Initialize Unity first")
                 } else {
-                    unity.quit()
+                    UnityPlayer.shared.quit()
                 }
             }
         }
@@ -125,6 +164,13 @@ struct ContentView: View {
         alertMessage = message
         showingAlert = true
     }
+}
+
+struct UnityRenderingView: UIViewRepresentable {
+    func makeUIView(context: Context) -> some UIView {
+        UnityPlayer.shared.renderingView!
+    }
+    func updateUIView(_ uiView: UIViewType, context: Context) {}
 }
 
 private extension UIView {
@@ -148,7 +194,7 @@ private extension UIView {
 }
 
 @main
-struct NativeiOSSwiftAppApp: App {
+struct NativetvOSSwiftAppApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView()

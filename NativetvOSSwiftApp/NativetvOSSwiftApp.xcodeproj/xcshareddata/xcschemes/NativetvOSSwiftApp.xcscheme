@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "2660"
+   LastUpgradeVersion = "2700"
    version = "1.7">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -15,24 +15,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "FF19CE023047F23D00FAB8E1"
-               BuildableName = "NativeiOSSwiftApp.app"
-               BlueprintName = "NativeiOSSwiftApp"
-               ReferencedContainer = "container:NativeiOSSwiftApp.xcodeproj">
-            </BuildableReference>
-         </BuildActionEntry>
-         <BuildActionEntry
-            buildForTesting = "YES"
-            buildForRunning = "YES"
-            buildForProfiling = "YES"
-            buildForArchiving = "YES"
-            buildForAnalyzing = "YES">
-            <BuildableReference
-               BuildableIdentifier = "primary"
-               BlueprintIdentifier = "D711B25F2BF2572F00442231"
-               BuildableName = "UnityFramework.framework"
-               BlueprintName = "UnityFramework"
-               ReferencedContainer = "container:../UnityProject/iosBuild/UaaLExample.xcodeproj">
+               BlueprintIdentifier = "FF4B36D3304E96C900415EA1"
+               BuildableName = "NativetvOSSwiftApp.app"
+               ReferencedContainer = "container:NativetvOSSwiftApp.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -54,16 +39,15 @@
       debugDocumentVersioning = "YES"
       debugServiceExtension = "internal"
       allowLocationSimulation = "YES"
-      queueDebuggingEnableBacktraceRecording = "Yes"
+      queueDebuggingEnabled = "No"
       disablePerformanceAntipatternChecker = "YES">
       <BuildableProductRunnable
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FF19CE023047F23D00FAB8E1"
-            BuildableName = "NativeiOSSwiftApp.app"
-            BlueprintName = "NativeiOSSwiftApp"
-            ReferencedContainer = "container:NativeiOSSwiftApp.xcodeproj">
+            BlueprintIdentifier = "FF4B36D3304E96C900415EA1"
+            BuildableName = "NativetvOSSwiftApp.app"
+            ReferencedContainer = "container:NativetvOSSwiftApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </LaunchAction>
@@ -77,10 +61,9 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "FF19CE023047F23D00FAB8E1"
-            BuildableName = "NativeiOSSwiftApp.app"
-            BlueprintName = "NativeiOSSwiftApp"
-            ReferencedContainer = "container:NativeiOSSwiftApp.xcodeproj">
+            BlueprintIdentifier = "FF4B36D3304E96C900415EA1"
+            BuildableName = "NativetvOSSwiftApp.app"
+            ReferencedContainer = "container:NativetvOSSwiftApp.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
    </ProfileAction>

@@ -6,25 +6,6 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXBuildFile section */
-		FF4B36F2304E975400415EA1 /* UnityFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = FF4B36F1304E975400415EA1 /* UnityFramework.framework */; };
-		FF4B36F3304E975400415EA1 /* UnityFramework.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = FF4B36F1304E975400415EA1 /* UnityFramework.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-/* End PBXBuildFile section */
-
-/* Begin PBXCopyFilesBuildPhase section */
-		FF4B36F4304E975400415EA1 /* Embed Frameworks */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 2147483647;
-			dstPath = "";
-			dstSubfolderSpec = 10;
-			files = (
-				FF4B36F3304E975400415EA1 /* UnityFramework.framework in Embed Frameworks */,
-			);
-			name = "Embed Frameworks";
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
 		FF4B36D4304E96C900415EA1 /* NativetvOSSwiftApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = NativetvOSSwiftApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FF4B36F1304E975400415EA1 /* UnityFramework.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = UnityFramework.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -43,7 +24,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FF4B36F2304E975400415EA1 /* UnityFramework.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -85,7 +65,6 @@
 				FF4B36D0304E96C900415EA1 /* Sources */,
 				FF4B36D1304E96C900415EA1 /* Frameworks */,
 				FF4B36D2304E96C900415EA1 /* Resources */,
-				FF4B36F4304E975400415EA1 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

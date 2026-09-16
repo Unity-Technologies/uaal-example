@@ -12,14 +12,13 @@ This document explains how to include Unity as a Library (Swift Project Type) in
 **Integration:**
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
-‼️ update image after tvOSExample added
-  <br><img src="images/ios/folderStructure.png">
-  - UnityProject
-  this is a simple Unity demo project which will be integrated to the standard iOS application. Assets / Plugins / iOS files used to communicate Unity player with Native app
+  <br><img src="images/iosSwift/folderStructure.png">
+  - **UnityProject**
+  this is a simple Unity demo project which will be integrated to the iOS Native host application. Assets / Plugins / iOS files used to communicate Unity player with Native app
 
-  - NativeiOSSwiftApp / NativetvOSSwiftApp
-  this is default Xcode SwiftUI based application where we going to integrate our Unity project. It has some UI controls for UaaL to showcase life cycle and almost prepared to run Unity Player, except for most important steps that we will do manually.
-
+  - **NativeiOSSwiftApp** / **NativetvOSSwiftApp**
+  this is default Xcode SwiftUI based application where we going to integrate our Unity project. It has some UI controls for UaaL to showcase life cycle and almost prepared to run Unity Player, except for key integration steps that we will do manually.
+  
 **2. Generate Xcode Swift Project for iOS**
 <br>Nothing new here just generate Xcode project as usual:
 - from Unity Editor open UnityProject 
@@ -39,15 +38,15 @@ This document explains how to include Unity as a Library (Swift Project Type) in
   <br><img src="images/iosSwift/workspaceProjects.png">
 
 **4. Add UnityFramework.framework**
-<br>With this step we add Unity player in the form of a framework to NativeiOSSwiftApp. 
+<br>With this step we add Unity player (UnityFramework.framework) to NativeiOSSwiftApp. 
 - select NativeiOSSwiftApp target from NativeiOSSwiftApp project
 - in "General" tab / "Frameworks, Libraries, and Embedded  Content" press +
 - Add Workspace/UaaLExample/UnityFramework.framework
  <br><img src="images/iosSwift/addToEmbeddedContent.png">
 
-Note: UaaL with Swift Project Type uses static UnityFramework.framework loading. The framework binary is loaded before main() of your host application. This means static initializers run before main, app launch time will slightly increase, and memory usage will increase.
+Note: UaaL with Swift Project Type requires static UnityFramework.framework loading. The framework binary is loaded before main() of your host application. This means static initializers run before main, app launch time will slightly increase, and memory usage will increase.
 
-**5. NativeCallProxy — Unity ↔ Native bridge**
+**5. NativeCallProxy — Unity -> Native Host**
 <br>The Unity project includes a Swift-native plugin at Assets/Plugins/iOS/NativeCallProxy.swift that defines the bridge between Unity C# code and the native host app. This file is compiled into UnityFramework and its public types are automatically visible to the host app — no header exposure or umbrella header changes needed (as in Objective-C integration).
 
 The plugin defines:
@@ -57,20 +56,20 @@ The plugin defines:
 
 In the host app, add `import UnityFramework` to access these types.
 
-**Native → Unity (Swift calling C#):**
+**Native Host → Unity (Host Swift calling C#):**
 ```swift
-UnityApp.shared.sendMessage(toGameObject: "Cube", functionName: "ChangeColor", message: "red")
+UnityPlayer.shared.sendMessage(toGameObject: "Cube", method: "ChangeColor", argument: "red")
 ```
 
  **6. Make Data folder to be part of the UnityFramework**
  <br>In UaaLExample project Data folder is part of Unity-iPhone target by default, we change that to be part of UnityFramework target to make data encapsulated in one single file UnityFramework.framework.
  - change Target Membership for Data folder to UnityFramework
    <br><img src="images/iosSwift/dataTargetMembership.png">
- - (optional) If you want UaaLExample scheme to continue to work after change above you need to call UnitySetDataBundleDirWithBundleId("com.unity3d.framework") to point where Data is located in uaal-example/UnityProject/iosBuild/UnityAPI/AppIntegration/UnityAppDelegate.swift:
-   ```
-    open func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+ - (optional) If you want UaaLExample scheme to continue to work after change above you need to override `AppDelegate.application(_:didFinishLaunchingWithOptions:)` to set the framework bundle id before Unity initializes, in uaal-example/UnityProject/iosBuild/UnityAPI/AppIntegration/AppDelegate.swift:
+   ```swift
+    override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         UnitySetDataBundleDirWithBundleId("com.unity3d.framework")
-        return UnityPlayer.shared.application(application, willFinishLaunchingWithOptions: launchOptions)
+        return UnityPlayer.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
    ```
    <br><img src="images/iosSwift/setDataBundleId.png">
@@ -83,9 +82,60 @@ If all went successfully at this point you should be able to run NativeiOSSwiftA
 Native View | Unity View
 ------------ | -------------
 <img src="images/iosSwift/ssNative.png" width='300px' > | <img src="images/iosSwift/ssUnity.png" width='300px'>
-Unity is not initialized, click Init to start Unity engine and show its view. | Unity is running, colorful buttons on the left are added by the host app as overlay on Unity View.
+Unity is not initialized, click Init to start Unity engine and show its view. | Unity is running, colorful buttons below are added by the host app as overlay on Unity View.
 
-## UnityApp
-‼️ TBD check UnityApp documentation for more details
+## UnityPlayer API
 
+**Engine lifecycle:**
+```swift
+// Start engine (first call initializes, subsequent calls reload after unload)
+UnityPlayer.shared.startEngine()
 
+// Unload — posts UnityNotifications.unityDidUnload when complete
+// Engine can be brought back with startEngine()
+UnityPlayer.shared.unload()
+
+// Quit — posts UnityNotifications.unityDidQuit when complete
+UnityPlayer.shared.quit()
+```
+
+**Embedding setup:**
+```swift
+// Set before startEngine() in any embedding scenario to keep the process alive after quit
+UnityPlayer.shared.terminatesOnQuit = false
+
+// Point Unity data to the framework bundle (UaaL only, call before startEngine)
+UnitySetDataBundleDirWithBundleId("com.unity3d.framework")
+```
+
+**Rendering view:**
+```swift
+// Metal-backed UIView, available after startEngine()
+// Wrap in a UIViewRepresentable for SwiftUI usage
+let view = UnityPlayer.shared.renderingView
+```
+
+**Pause / resume:**
+```swift
+UnityPlayer.shared.pause()
+UnityPlayer.shared.resume()
+UnityPlayer.shared.isPaused()
+```
+
+**Messaging (Native → Unity):**
+```swift
+UnityPlayer.shared.sendMessage(toGameObject: "Cube", method: "ChangeColor", argument: "red")
+```
+
+**Scene lifecycle forwarding (call from your SceneDelegate):**
+```swift
+UnityPlayer.shared.sceneDidBecomeActive(scene)
+UnityPlayer.shared.sceneWillResignActive(scene)
+UnityPlayer.shared.sceneDidEnterBackground(scene)
+UnityPlayer.shared.sceneWillEnterForeground(scene)
+```
+
+**Notifications:**
+- `UnityNotifications.unityDidInitializeRuntime` — engine runtime initialized (first start only)
+- `UnityNotifications.unityDidUnload` — engine unloaded, can be restarted
+- `UnityNotifications.unityDidQuit` — engine quit, cannot be restarted
