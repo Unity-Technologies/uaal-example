@@ -1,17 +1,19 @@
 # Unity as a Library integration example to iOS and Android #
 
-In some scenario developers using native platform technologies (like Android/Java & iOS/Objective C) want to include in their apps/games features powered by Unity for 3D/2D Real Time Rendering, AR experience, interaction with 3D models, 2D mini games and more.
+In some scenario developers using native platform technologies (like Android/Java & iOS/tvOS Objective-C/Swift) want to include in their apps/games features powered by Unity for 3D/2D Real Time Rendering, AR experience, interaction with 3D models, 2D mini games and more.
 
 Starting with Unity 2019.3.0a2, Unity  introduced a new feature to use Unity as a library in native apps by integrating the Unity runtime components and content in a native platform project. The Unity Runtime Library exposes controls to manage when and how to load/activate/unload within the native application.
 
 **Warning**
 
-Using Unity as a Library **requires you have experience with developing for native platform technologies** such as Java/Android, Objective C/iOS, or Windows Win32/UWP. You need to be familiar with the structure of the project, language features and specific platform configuration options (like user permissions for example).
+Using Unity as a Library **requires you have experience with developing for native platform technologies** such as Java/Android, Objective-C / Swift iOS/tvOS, or Windows Win32/UWP. You need to be familiar with the structure of the project, language features and specific platform configuration options (like user permissions for example).
 
 **Requirements**
 
 * **Android:** Unity 6000.0.0b16 or higher
-* **iOS:** Unity 2021.3.28f1 or higher
+* **iOS/tvOS:** 
+Objective-C project type: Unity 2021.3.28f1 or higher
+Swift project type: Unity 6000.7+ or higher
 
 **Limitations**
 
@@ -28,5 +30,9 @@ The build process overall is still the same, Unity creates the iOS Xcode and And
  A library part (iOS framework and Android Archive (AAR) file) that includes all source & plugins 
  A thin launcher part that includes app representation data and runs library
 
-Step by step explanations on how to include the [iOS](docs/ios.md) / [Android](docs/android.md) library part into your native application when needed.
+Step by step explanations on how to include the:
+- [iOS Objective-C](docs/ios.md) 
+- [iOS Swift](docs/iosSwift.md) 
+- [Android](docs/android.md) 
+UaaL into your native application when needed.
 

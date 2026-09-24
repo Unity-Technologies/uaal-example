@@ -2,14 +2,18 @@ import SwiftUI
 import UIKit
 import UnityAPI
 import UnityFramework
-import Observation
+import Combine
+import os.signpost
 
-@Observable
-class Helper: NSObject, NativeCallsProtocol {
+private let poi = OSLog(subsystem: "com.unity.uaal", category: .pointsOfInterest)
+
+class Helper: NSObject, NativeCallsProtocol, NativeCallsProtocol {
     static let shared = Helper()
-    var lastCircleColor: Color? = nil
-    var isUnityRunning = false
-    var hasUnityQuit = false
+    
+    @Published var lastCircleColor: Color? = nil
+    @Published var isUnityRunning = false
+    @Published var hasUnityQuit = false
+    
     var unityWindow: UIWindow?
 
     private override init() {
@@ -34,8 +38,11 @@ class Helper: NSObject, NativeCallsProtocol {
     func startUnity() {
         guard !hasUnityQuit, !isUnityRunning else { return }
 
+        let id = OSSignpostID(log: poi)
+        os_signpost(.begin, log: poi, name: "StartEngine", signpostID: id)
+
         UnityPlayer.shared.terminatesOnQuit = false
-        UnitySetDataBundleDirWithBundleId("com.unity3d.framework")
+        UnityPlayer.shared.setDataBundleId("com.unity3d.framework")
         UnityPlayer.shared.startEngine()
         isUnityRunning = true
 
@@ -57,6 +64,8 @@ class Helper: NSObject, NativeCallsProtocol {
         UnityPlayer.shared.sceneDidBecomeActive(windowScene)
 
         installUnityOverlayButtons()
+
+        os_signpost(.end, log: poi, name: "StartEngine", signpostID: id)
     }
 
     func showHostMainWindow(_ color: String!) {
@@ -86,25 +95,31 @@ class Helper: NSObject, NativeCallsProtocol {
         let spacing: CGFloat = 60
 
         rootView.addOverlayButton("Show Main", center: CGPoint(x: x, y: y), size: btnSize, color: .green) {
-            [weak self] in self?.showHostMainWindow("")
+            [weak self] in
+            os_signpost(.event, log: poi, name: "ShowMain")
+            self?.showHostMainWindow("")
         }
         y += spacing
         rootView.addOverlayButton("Send Msg", center: CGPoint(x: x, y: y), size: btnSize, color: .yellow) {
+            os_signpost(.event, log: poi, name: "SendMessage")
             UnityPlayer.shared.sendMessage(toGameObject: "Cube", method: "ChangeColor", argument: "yellow")
         }
         y += spacing
         rootView.addOverlayButton("Unload", center: CGPoint(x: x, y: y), size: btnSize, color: .red) {
+            os_signpost(.event, log: poi, name: "Unload")
             UnityPlayer.shared.unload()
         }
         y += spacing
         rootView.addOverlayButton("Quit", center: CGPoint(x: x, y: y), size: btnSize, color: .red) {
+            os_signpost(.event, log: poi, name: "Quit")
             UnityPlayer.shared.quit()
         }
     }
 }
 
 struct ContentView: View {
-    var helper = Helper.shared
+    @ObservedObject var helper = Helper.shared
+    
     @State private var alertTitle = ""
     @State private var alertMessage = ""
     @State private var showingAlert = false

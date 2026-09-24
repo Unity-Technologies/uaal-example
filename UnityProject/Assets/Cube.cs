@@ -66,6 +66,16 @@ public class Cube : MonoBehaviour
 #endif
     }
 
+    void OnMouseEnter()
+    {
+        GetComponent<Renderer>().material.color = Color.white;
+    }
+
+    void OnMouseExit()
+    {
+        ChangeColor(lastStringColor);
+    }
+
     void OnGUI()
     {
         GUIStyle style = new GUIStyle("button");

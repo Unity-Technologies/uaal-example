@@ -1,5 +1,6 @@
 ## Integrating Unity as a library (Swift Project Type) into standard Swift based iOS / tvOS application
-This document explains how to include Unity as a Library (Swift Project Type) into standard iOS / tvOS Swift based application. You can read more about [Unity as a Library](https://docs.unity3d.com/2019.3/Documentation/Manual/UnityasaLibrary.html).
+This document explains how to include Unity as a Library (Swift Project Type) into standard iOS / tvOS Swift based application. For Objective-C integration check [iOS Objective-C](docs/ios.md)
+You can read more about [Unity as a Library](https://docs.unity3d.com/6000.7/Documentation/Manual/UnityasaLibrary.html).
 
 **Requirements:**
 - Minimum iOS / tvOS Version 16.0+
@@ -68,7 +69,7 @@ UnityPlayer.shared.sendMessage(toGameObject: "Cube", method: "ChangeColor", argu
  - (optional) If you want UaaLExample scheme to continue to work after change above you need to override `AppDelegate.application(_:didFinishLaunchingWithOptions:)` to set the framework bundle id before Unity initializes, in uaal-example/UnityProject/iosBuild/UnityAPI/AppIntegration/AppDelegate.swift:
    ```swift
     override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
-        UnitySetDataBundleDirWithBundleId("com.unity3d.framework")
+        UnityPlayer.shared.setDataBundleId("com.unity3d.framework")
         return UnityPlayer.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
    ```
@@ -105,7 +106,7 @@ UnityPlayer.shared.quit()
 UnityPlayer.shared.terminatesOnQuit = false
 
 // Point Unity data to the framework bundle (UaaL only, call before startEngine)
-UnitySetDataBundleDirWithBundleId("com.unity3d.framework")
+UnityPlayer.shared.setDataBundleId("com.unity3d.framework")
 ```
 
 **Rendering view:**

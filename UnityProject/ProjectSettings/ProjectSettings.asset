@@ -183,7 +183,7 @@ PlayerSettings:
     Android: com.DefaultCompany.UaaLExample
     Standalone: com.DefaultCompany.UaaLExample
     iPhone: com.DefaultCompany.UaaLExample
-    tvOS: com.unity.tvtest21
+    tvOS: com.DefaultCompany.UaaLExample
   buildNumber:
     Bratwurst: 0
     Standalone: 0
@@ -209,13 +209,13 @@ PlayerSettings:
   StripUnusedMeshComponents: 1
   strictShaderVariantMatching: 0
   VertexChannelCompressionMask: 4054
-  iPhoneSdkVersion: 989
+  iPhoneSdkVersion: 988
   iOSSimulatorArchitecture: 1
   iOSTargetOSVersionString: 16.0
-  tvOSSdkVersion: 0
+  tvOSSdkVersion: 1
   tvOSSimulatorArchitecture: 1
   tvOSRequireExtendedGameController: 0
-  tvOSTargetOSVersionString: 15.0
+  tvOSTargetOSVersionString: 16.0
   VisionOSSdkVersion: 0
   VisionOSTargetOSVersionString: 1.0
   xcodeProjectType: 1

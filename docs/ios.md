@@ -1,5 +1,6 @@
 ## Integrating Unity as a library (Objective-C Project Type) into standard iOS app
-This document explains how to include Unity as a Library into standard iOS application. You can read more about [Unity as a Library](https://docs.unity3d.com/2019.3/Documentation/Manual/UnityasaLibrary.html).
+This document explains how to include Unity as a Library (Objective-C Project Type) into standard iOS / tvOS Objective-C application. For Swift integration check [iOS Swift](docs/iosSwift.md)
+You can read more about [Unity as a Library](https://docs.unity3d.com/6000.7/Documentation/Manual/UnityasaLibrary.html).
 
 **Requirements:**
 - Xcode 9.4+
