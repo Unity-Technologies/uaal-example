@@ -11,9 +11,9 @@ Using Unity as a Library **requires you have experience with developing for nati
 **Requirements**
 
 * **Android:** Unity 6000.0.0b16 or higher
-* **iOS/tvOS:** 
-Objective-C project type: Unity 2021.3.28f1 or higher
-Swift project type: Unity 6000.7+ or higher
+* **iOS/tvOS:**  
+    * Objective-C Project Type: Unity 2021.3.28f1 or higher
+    * Swift Project Type: Unity 6000.7 or higher
 
 **Limitations**
 
@@ -30,9 +30,9 @@ The build process overall is still the same, Unity creates the iOS Xcode and And
  A library part (iOS framework and Android Archive (AAR) file) that includes all source & plugins 
  A thin launcher part that includes app representation data and runs library
 
-Step by step explanations on how to include the:
-- [iOS Objective-C](docs/ios.md) 
-- [iOS Swift](docs/iosSwift.md) 
+Platform-specific instructions on how to include Unity library part into your native application below:
+- [iOS/tvOS Objective-C](docs/ios.md) 
+- [iOS/tvOS Swift](docs/iosSwift.md) 
 - [Android](docs/android.md) 
-UaaL into your native application when needed.
+
 
