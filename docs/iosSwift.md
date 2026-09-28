@@ -68,7 +68,7 @@ UnityPlayer.shared.sendMessage(toGameObject: "Cube", method: "ChangeColor", argu
    <br><img src="images/iosSwift/dataTargetMembership.png">
  - (optional) If you want UaaLExample scheme to continue to work after change above you need to override `AppDelegate.application(_:didFinishLaunchingWithOptions:)` to set the framework bundle id before Unity initializes, in uaal-example/UnityProject/iosBuild/UnityAPI/AppIntegration/AppDelegate.swift:
    ```swift
-    override func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
+    public func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey : Any]? = nil) -> Bool {
         UnityPlayer.shared.setDataBundleId("com.unity3d.framework")
         return UnityPlayer.shared.application(application, didFinishLaunchingWithOptions: launchOptions)
     }
