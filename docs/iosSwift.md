@@ -1,5 +1,5 @@
 ## Integrating Unity as a library (Swift Project Type) into standard Swift based iOS / tvOS application
-This document explains how to include Unity as a Library (Swift Project Type) into standard iOS / tvOS Swift based application. For Objective-C integration check [iOS Objective-C](docs/ios.md)
+This document explains how to include Unity as a Library (Swift Project Type) into standard iOS / tvOS Swift based application. For Objective-C integration check [iOS Objective-C](ios.md)
 You can read more about [Unity as a Library](https://docs.unity3d.com/6000.7/Documentation/Manual/UnityasaLibrary.html).
 
 **Requirements:**
