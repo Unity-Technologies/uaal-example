@@ -100,7 +100,7 @@ namespace UAAL.EditorTests
 
         internal static BuildProjectResult BuildGradleProject(string workingDirectory)
         {
-            var java = Path.Combine(UnityEditor.Android.AndroidExternalToolsSettings.jdkRootPath, "bin", "java");
+            var java = "FIXIT";//Path.Combine(UnityEditor.Android.AndroidExternalToolsSettings.jdkRootPath, "bin", "java");
             var gradleLauncherJarPath = GetGradleLauncherJar(Path.Combine(BuildPipeline.GetPlaybackEngineDirectory(BuildTarget.Android, BuildOptions.None), "Tools"));
             if (Application.platform == RuntimePlatform.WindowsEditor)
                 java += ".exe";

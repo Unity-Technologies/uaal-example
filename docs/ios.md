@@ -1,5 +1,6 @@
-## Integrating Unity as a library into standard iOS app
-This document explains how to include Unity as a Library into standard iOS application. You can read more about [Unity as a Library](https://docs.unity3d.com/2019.3/Documentation/Manual/UnityasaLibrary.html).
+## Integrating Unity as a library (Objective-C Project Type) into standard iOS app
+This document explains how to include Unity as a Library (Objective-C Project Type) into standard iOS / tvOS Objective-C application. For Swift integration check [iOS Swift](iosSwift.md)
+You can read more about [Unity as a Library](https://docs.unity3d.com/6000.7/Documentation/Manual/UnityasaLibrary.html).
 
 **Requirements:**
 - Xcode 9.4+
@@ -15,6 +16,7 @@ This document explains how to include Unity as a Library into standard iOS appli
 <br>Nothing new here just generate Xcode project as usual:
 - from Unity Editor open UnityProject 
 - set valid Bundle Identification and Signing Team ID ( to avoid Xcode signing issues on later steps )  (Menu / Edit / Project Settings / Player / iOS Setting tab / Other Settings / Identification Section)
+- ⚠️ select Objecgtive-C Project Type from (Player Settings / Other Settings / Configuration / Xcode project type)
 - select and switch to platform iOS (Menu / File / Builds Settings)
   - Build inside UnityProject to iosBuild folder
     <br><img src="images/ios/iosBuildProject.png">
