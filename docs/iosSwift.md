@@ -13,7 +13,7 @@ You can read more about [Unity as a Library](https://docs.unity3d.com/6000.7/Doc
 **Integration:**
 **1. Get source**
 - Clone or Download GitHub repo [uaal-example](https://github.com/Unity-Technologies/uaal-example). It includes:
-  <br><img src="images/iosSwift/folderStructure.png">
+  <br><img src="images/iosSwift/folderStructure.png" width="200">
   - **UnityProject**
   this is a simple Unity demo project which will be integrated to the iOS Native host application. Assets / Plugins / iOS files used to communicate Unity player with Native app
 
@@ -27,23 +27,23 @@ You can read more about [Unity as a Library](https://docs.unity3d.com/6000.7/Doc
 - select and switch to platform iOS (Menu / File / Builds Settings)
 - ⚠️ select Swift Project Type from (Player Settings / Other Settings / Configuration / Xcode project type)
 - Build inside UnityProject to iosBuild folder
-  <br><img src="images/iosSwift/iosBuildProject.png">
+  <br><img src="images/iosSwift/iosBuildProject.png" width="350">
     
 **3. Setup Xcode workspace**
 <br>Xcode workspace allows to work on multiple projects simultaneously and combine their products
 - open NativeiOSSwiftApp.xcodeproj from Xcode (or NativetvOSSwiftApp.xcodeproj for tvOS)
 - create workspace and save it at uaal-example/both.xcworkspace. (File / New / Workspace)
-  <br><img src="images/iosSwift/workspaceLocation.png">
+  <br><img src="images/iosSwift/workspaceLocation.png" width="200">
 - close NativeiOSSwiftApp.xcodeproj project all Next steps are done from just created Workspace project
 - add NativeiOSSwiftApp.xcodeproj and generated UaaLExample.xcodeproj from step #2 to workspace on a same level ( File / Add Files to "both" )
-  <br><img src="images/iosSwift/workspaceProjects.png">
+  <br><img src="images/iosSwift/workspaceProjects.png" width="250">
 
 **4. Add UnityFramework.framework**
 <br>With this step we add Unity player (UnityFramework.framework) to NativeiOSSwiftApp. 
 - select NativeiOSSwiftApp target from NativeiOSSwiftApp project
 - in "General" tab / "Frameworks, Libraries, and Embedded  Content" press +
 - Add Workspace/UaaLExample/UnityFramework.framework
- <br><img src="images/iosSwift/addToEmbeddedContent.png">
+ <br><img src="images/iosSwift/addToEmbeddedContent.png" width="300">
 
 Note: UaaL with Swift Project Type requires static UnityFramework.framework loading. The framework binary is loaded before main() of your host application. This means static initializers run before main, app launch time will slightly increase, and memory usage will increase.
 
