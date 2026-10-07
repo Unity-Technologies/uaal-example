@@ -5,7 +5,7 @@ You can read more about [Unity as a Library](https://docs.unity3d.com/6000.7/Doc
 **Requirements:**
 - Minimum iOS / tvOS Version 16.0+
 - Xcode 16.0+
-- Unity version 6000.7+
+- Unity version 7000.0.0a7
 
 **Notes:**
 - Integration steps for tvOS are the same as for iOS
