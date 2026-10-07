@@ -13,7 +13,7 @@ Using Unity as a Library **requires you have experience with developing for nati
 * **Android:** Unity 6000.0.0b16 or higher
 * **iOS/tvOS:**  
     * Objective-C Project Type: Unity 2021.3.28f1 or higher
-    * Swift Project Type: Unity 6000.7 or higher
+    * Swift Project Type: Unity 7000.0.0a7 or higher
 
 **Limitations**
 
