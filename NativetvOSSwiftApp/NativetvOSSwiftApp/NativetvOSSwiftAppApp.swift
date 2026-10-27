@@ -7,7 +7,7 @@ import os.signpost
 
 private let poi = OSLog(subsystem: "com.unity.uaal", category: .pointsOfInterest)
 
-class Helper: NSObject, NativeCallsProtocol, NativeCallsProtocol {
+class Helper: NSObject, ObservableObject, NativeCallsProtocol {
     static let shared = Helper()
     
     @Published var lastCircleColor: Color? = nil
